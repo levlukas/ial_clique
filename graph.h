@@ -25,7 +25,4 @@ int graph_write(graph* g, const char* filename);
 // Prints the graph to stdout
 void graph_print(graph* g);
 
-// Checks if a subset of vertices is a clique
-int is_clique(graph* g, int subset);
-
 #endif // GRAPH_H
