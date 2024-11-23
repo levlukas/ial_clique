@@ -6,7 +6,7 @@
 #include "graph.h"
 
 // check if a vertex can be added to the clique
-int is_clique(graph* g, int subset) {
+int is_clique_bruteforce(graph* g, int subset) {
     for (int i = 0; i < g->size; i++) {
         for (int j = i + 1; j < g->size; j++) {
             // check if both vertices are in the subset
@@ -29,7 +29,7 @@ void bruteforce(graph* g) {
     // iterate over all possible subsets of vertices
     int max_subset_size = 1 << g->size;  // 2^size -> binary shift
     for (int subset = 1; subset < max_subset_size; subset++) {  // iterate over all subset sizes
-        if (is_clique(g, subset)) {
+        if (is_clique_bruteforce(g, subset)) {
             // count number of vertices in the subset
             int count = 0;
             for (int i = 0; i < g->size; i++) {  // for each i in size

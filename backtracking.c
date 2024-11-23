@@ -3,7 +3,7 @@
 #include "graph.h"
 
 // check if adding a vertex forms a clique
-int is_clique(graph* g, int* clique, int clique_size, int vertex) {
+int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex) {
     for (int i=0; i<clique_size; i++) {
         if (g->matrix[clique[i]][vertex] == 0) {  // if there is no edge at [i][vertex]
             return 0;  // not a clique
@@ -33,7 +33,7 @@ void find_clique(graph* g, int* clique, int clique_size, int* max_clique, int* m
 
     // try adding vertices from the current vertex to the end of the graph
     for (int i=vertex; i<g->size; i++) {
-        if (is_clique(g, clique, clique_size, i)) {
+        if (is_clique_backtracking(g, clique, clique_size, i)) {
             clique[clique_size] = i;
             find_clique(g, clique, clique_size+1, max_clique, max_size, i+1);
         }
