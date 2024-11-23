@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "graph.h"
+#include "../graph.h"
 
 // check if a vertex can be added to the clique
 int is_clique_bruteforce(graph* g, int subset) {

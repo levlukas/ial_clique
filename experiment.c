@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "graph.h"
-#include "bruteforce.h"
-#include "backtracking.h"
+#include "algorithms/bruteforce.h"
+#include "algorithms/backtracking.h"
 
 // Generate a random graph of given size
 graph* generate_random_graph(int size, double density) {

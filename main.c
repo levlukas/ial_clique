@@ -1,6 +1,6 @@
 #include "graph.h"
-#include "bruteforce.h"
-#include "backtracking.h"
+#include "algorithms/bruteforce.h"
+#include "algorithms/backtracking.h"
 #include "experiment.h"
 
 int main() {

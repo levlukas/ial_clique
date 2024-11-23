@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "graph.h"
+#include "../graph.h"
 
 // check if adding a vertex forms a clique
 int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex) {
