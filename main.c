@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "bruteforce.h"
+#include "backtracking.h"
 
 int main() {
     // Read the graph from a file
@@ -8,9 +9,13 @@ int main() {
         printf("Graph loaded:\n");
         graph_print(g);
 
-        // Find the largest clique
-        printf("\nFinding the largest clique...\n");
+        // Find the largest clique using brute force
+        printf("\nFinding the largest clique using brute force...\n");
         bruteforce(g);
+
+        // Find the largest clique using backtracking
+        printf("\nFinding the largest clique using backtracking...\n");
+        backtracking(g);
     } else {
         printf("Failed to load the graph.\n");
     }
