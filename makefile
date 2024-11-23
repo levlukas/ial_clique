@@ -5,7 +5,7 @@ SRC = main.c graph.c algorithms/bruteforce.c algorithms/backtracking.c experimen
 TARGET = myprogram     # Final executable name
 
 # Default target
-all: $(TARGET)
+run: $(TARGET)
 
 # Compile and link directly into the executable
 $(TARGET): $(SRC)

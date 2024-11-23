@@ -14,7 +14,8 @@ graph* generate_random_graph(int size, double density) {
         for (int j = i + 1; j < size; j++) {
             // Add an edge with the given density probability
             int edge = (rand() / (double)RAND_MAX) < density ? 1 : 0;
-            g->matrix[i][j] = g->matrix[j][i] = edge;
+            g->matrix[i][j] = edge;
+            g->matrix[j][i] = edge;  // Ensure symmetry for undirected graph
         }
         g->matrix[i][i] = 0;  // No self-loops
     }
@@ -33,11 +34,13 @@ double measure_execution_time(void (*algorithm)(graph*), graph* g) {
 }
 
 // Run experiments and compare algorithms
-void run_experiments(int size, float density) {
+void run_experiments(int size, double density) {
     printf("Running experiments on random graphs (size: %d, density: %.2f)\n\n", size, density);
 
     // Generate a random graph
     graph* g = generate_random_graph(size, density);
+
+    graph_print(g);
 
     // Run bruteforce
     printf("Running bruteforce...\n");

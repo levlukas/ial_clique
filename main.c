@@ -25,8 +25,6 @@ int main() {
     // Example 2: Compare time complexity with random graphs
     printf("\nComparing algorithms on random graphs:\n");
     run_experiments(10, 0.5);  // 10 vertices, 50% edge density
-    run_experiments(15, 0.3);  // 15 vertices, 30% edge density
-    run_experiments(20, 0.2);  // 20 vertices, 20% edge density
 
     return 0;
 }
