@@ -25,12 +25,30 @@ graph* graph_init(int size) {
         return NULL;
     }
 
+    // Allocate memory for each row of the matrix and initialize to 0
+    for (int i = 0; i < size; i++) {
+        g->matrix[i] = (int*)calloc(size, sizeof(int)); // Allocate and set to 0
+        if (g->matrix[i] == NULL) {
+            // Clean up in case of failure
+            for (int j = 0; j < i; j++) {
+                free(g->matrix[j]);
+            }
+            free(g->matrix);
+            free(g);
+            return NULL;
+        }
+    }
+
     return g;
 }
 
 
 // deletes graph and frees memory
 void graph_delete(graph* g) {
+    if (g == NULL) {
+        return;  // Avoid dereferencing a NULL pointer
+    }
+
     // free memory for matrix
     for (int i = 0; i < g->size; i++) {
         free(g->matrix[i]);
@@ -116,4 +134,20 @@ void graph_print(graph* g) {
         }
         printf("\n");  // new line
     }
+}
+
+// check if a vertex can be added to the clique
+int is_clique(graph* g, int subset) {
+    for (int i = 0; i < g->size; i++) {
+        for (int j = i + 1; j < g->size; j++) {
+            // check if both vertices are in the subset
+            if ((subset & (1 << i)) && (subset & (1 << j))) {
+                // check if there is no edge between them
+                if (g->matrix[i][j] == 0) {
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;  // great success
 }
