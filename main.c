@@ -5,7 +5,9 @@
 
 int main() {
     // Example 1: Read a graph from a file and run algorithms
-    graph* g = graph_init(4);
+    int g_size;
+    g_size = graph_read_size("graph.txt");
+    graph* g = graph_init(g_size);
     if (graph_read(g, "graph.txt")) {
         printf("Graph loaded:\n");
         graph_print(g);

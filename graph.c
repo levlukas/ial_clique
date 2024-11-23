@@ -59,6 +59,35 @@ void graph_delete(graph* g) {
     free(g);
 }
 
+// reads graph size from file
+int graph_read_size(const char* filename) {
+    int size;  // variable to be returned
+
+    // Open file
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Error: Could not open file '%s'\n", filename);
+        return -1;  // Error: Unable to open file
+    }
+
+    // Read size
+    if (fscanf(file, "%d", &size) != 1) {  // Failed to read size
+        fprintf(stderr, "Error: Failed to read graph size from file\n");
+        fclose(file);
+        return -1;  // Error: Invalid file format
+    }
+
+    // Validate size
+    if (size <= 0) {
+        fprintf(stderr, "Error: Invalid graph size (%d) in file\n", size);
+        fclose(file);
+        return -1;  // Error: Non-positive size
+    }
+
+    fclose(file);
+    return size;  // return size, great success
+}
+
 // reads graph from file
 int graph_read(graph* g, const char* filename) {
     // open file
