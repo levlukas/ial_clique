@@ -69,7 +69,7 @@ int graph_read(graph* g, const char* filename) {
 
     // read size
     int size;
-    if (fscanf(file, "%d", &size) != 1) {  // read check
+    if (fscanf(file, "%d", &size) != 1) {  // read check, TODO: check if size is valid
         fclose(file);
         return 0;
     }
