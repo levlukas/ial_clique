@@ -64,18 +64,21 @@ int graph_read(graph* g, const char* filename) {
     // open file
     FILE* file = fopen(filename, "r");
     if (file == NULL) {  // file open check
+        fprintf(stderr, "Error: Could not open file '%s'\n", filename);
         return 0;
     }
 
     // read size
     int size;
-    if (fscanf(file, "%d", &size) != 1) {  // read check, TODO: check if size is valid
+    if (fscanf(file, "%d", &size) != 1) {  // read check
+        fprintf(stderr, "Error: Failed to read graph size from file\n");
         fclose(file);
         return 0;
     }
 
     // check size
     if (size != g->size) {
+        fprintf(stderr, "Error: Graph size mismatch (expected %d, got %d)\n", g->size, size);
         fclose(file);
         return 0;
     }
