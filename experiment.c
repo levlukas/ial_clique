@@ -4,6 +4,7 @@
 #include "graph.h"
 #include "algorithms/bruteforce.h"
 #include "algorithms/backtracking.h"
+#include "algorithms/smart_bruteforce.h"
 
 // Generate a random graph of given size
 graph* generate_random_graph(int size, double density) {
@@ -49,6 +50,13 @@ void run_experiments(int size, double density) {
     bruteforce(g);
     clock_t end = clock();
     printf("Bruteforce time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+    // Run smart bruteforce
+    printf("Running smart bruteforce...\n");
+    start = clock();
+    s_bruteforce(g);
+    end = clock();
+    printf("Smart bruteforce time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     // Run backtracking
     printf("Running backtracking...\n");
