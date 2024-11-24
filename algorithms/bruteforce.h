@@ -7,7 +7,6 @@
 
 void bruteforce(graph* g);
 
-// Checks if a subset of vertices is a clique
 int is_clique_bruteforce(graph* g, int subset);
 
 #endif // BRUTEFORCE_H

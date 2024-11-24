@@ -1,7 +1,15 @@
 # Fdb version 4
-["pdflatex"] 1732465448.43047 "/home/VUT/3_zimni/ial/sem_proj/documentation/dokumentace.tex" "dokumentace.pdf" "dokumentace" 1732465449.55243 0
+["bibtex dokumentace"] 0 "dokumentace.aux" "dokumentace.bbl" "dokumentace" 0 0
+  "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
+  "dokumentace.aux" 0 -1 0 "pdflatex"
+  "dokumentace/zdroje/lib.bib" 0 -1 0 ""
+  (generated)
+  "dokumentace.bbl"
+  "dokumentace.blg"
+  (rewritten before read)
+["pdflatex"] 1732481769.91344 "/home/VUT/3_zimni/ial/sem_proj/documentation/dokumentace.tex" "dokumentace.pdf" "dokumentace" 1732481771.2471 0
   "/etc/texmf/web2c/texmf.cnf" 1732455289.45301 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/VUT/3_zimni/ial/sem_proj/documentation/dokumentace.tex" 1732465447.90429 3680 2a4e601dd19d93ce47301c09cf92597f ""
+  "/home/VUT/3_zimni/ial/sem_proj/documentation/dokumentace.tex" 1732481762.71856 4185 483c0d5e35603ae10ad63ec338707c6d ""
   "/root/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk" 1732464296.08692 11524 aba54f06fd2eb77ab777046f8287948c ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -106,9 +114,10 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1732461723.7751 165012 f177baa1c39a3ebd62c3096a43521a0d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1732461769 6831129 c61db80cb63620dfec7f87f2539c1ae2 ""
-  "dokumentace.aux" 1732465449.45845 866 3b0950f10f47f9de62d8e6dfcea18d6f "pdflatex"
-  "dokumentace.out" 1732465449.45945 289 4659a980cdda263cb43299515bacb24d "pdflatex"
-  "dokumentace.tex" 1732465447.90429 3680 2a4e601dd19d93ce47301c09cf92597f ""
+  "dokumentace.aux" 1732481771.02467 1511 efc9afe17b2c9ded82601b3dd6657a75 "pdflatex"
+  "dokumentace.bbl" 0 -1 0 "bibtex dokumentace"
+  "dokumentace.out" 1732481771.02667 432 a57e8240f4210ea5930d315ee05b0560 "pdflatex"
+  "dokumentace.tex" 1732481762.71856 4185 483c0d5e35603ae10ad63ec338707c6d ""
   (generated)
   "dokumentace.aux"
   "dokumentace.log"

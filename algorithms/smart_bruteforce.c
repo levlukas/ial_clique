@@ -1,27 +1,56 @@
+/*
+ * Abstrakt:
+ * Tento soubor obsahuje optimalizaci pro metodu "pristup hrubou silou" zahrnutou v souboru
+ * algorithms/bruteforce.c. Tato optimalizace je zalozena na rekurzi a vyhodnocuje pouze 
+ * podmnoziny, ktere jsou podezrele z formovani kliky.
+ * 
+ * Slozitost:
+ * - casova: O(2^n * n^2), kde n je pocet vrcholu grafu.
+ *  - iterace pres vsechny podmnoziny vrcholu: O(2^n)
+ *  - kontrola, zda je podmnozina klikou: O(n^2)
+ * - prostorova: O(n), kde n je pocet vrcholu grafu. TODO: overit
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "../graph.h"
+#include "../graph.h"  // obsahuje definici struktury graph (graf)
 
-// Globals for tracking largest cliques
-int s_max_clique_size = 0;
-int** s_largest_cliques = NULL;
-int s_clique_count = 0;
+// globalni promenne pro uchovani vysledku
+int s_max_clique_size = 0;      // velikost nejvetsi dosavadne nalezene kliky
+int** s_largest_cliques = NULL; // dynamicky alokovane pole ukazatelu na pole vrcholu formujicich nejvetsi kliky
+int s_clique_count = 0;         // pocet nejvetsich klik
 
-// Check if a subset is a clique
+/*
+ * Funkce pro zjisteni, zda je dana podmnozina vrcholu grafu klika.
+ * Parametry:
+ * - graph* g: ukazatel na strukturu grafu
+ * - int* subset: pole vrcholu tvorici podmnozinu
+ * - int size: velikost podmnoziny
+ * Vraci:
+ * - true, pokud je podmnozina klika
+ * - false, pokud byla nalezena hrana s hodnotou 0 v matici (hrana neexistuje)
+ */
 bool s_is_clique(graph* g, int* subset, int size) {
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size; j++) {
             if (!g->matrix[subset[i]][subset[j]]) {
-                return false;  // Not a clique
+                return false;  // nejde o kliku
             }
         }
     }
-    return true;
+    return true;  // vstupni podgraf je klika
 }
 
-// Recursive function to generate and evaluate subsets
+/*
+ * Rekurzivni funkce pro nalezeni vsech nejvetsich klik v grafu.
+ * Parametry:
+ * - graph* g: ukazatel na strukturu grafu
+ * - int* subset: pole vrcholu tvorici podmnozinu
+ * - int subset_size: velikost podmnoziny
+ * - int start: index prvniho vrcholu pro dalsi podmnozinu
+ */
 void s_find_cliques_recursive(graph* g, int* subset, int subset_size, int start) {
     // Evaluate current subset as a clique
     if (s_is_clique(g, subset, subset_size)) {
@@ -54,7 +83,11 @@ void s_find_cliques_recursive(graph* g, int* subset, int subset_size, int start)
     }
 }
 
-// Function to find all largest cliques using recursion
+/*
+ * Funkce pro nalezeni vsech nejvetsich klik v grafu pomoci metody pristupu hrubou silou.
+ * Parametry:
+ * - graph* g: ukazatel na strukturu grafu
+ */
 void s_bruteforce(graph* g) {
     // Allocate space for the subset
     int* subset = malloc(g->size * sizeof(int));
