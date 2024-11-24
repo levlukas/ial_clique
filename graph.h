@@ -16,7 +16,7 @@ graph* graph_init(int size);
 // Deletes a graph and frees memory
 void graph_delete(graph* g);
 
-// Reads a graph from a file
+// Reads a graph size from a file
 int graph_read_size(const char* filename);
 
 // Reads a graph from a file

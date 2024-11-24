@@ -21,49 +21,64 @@ int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex) {
  * - int* max_clique: the largest clique found so far
  * - int* max_size: the size of the largest clique found so far
  * - int vertex: the vertex to be tested for inclusion in the clique.
+ * - int** solutions: array of arrays of vertices that form the largest clique
+ * - int* solution_count: number of arrays in solutions
  */
-void find_clique(graph* g, int* clique, int clique_size, int* max_clique, int* max_size, int vertex) {
-    // if the current clique is larger than the largest clique found so far
+void find_clique(graph* g, int* clique, int clique_size, int* max_size, int** solutions, int* solution_count, int vertex) {
+    // If the current clique is larger than the largest found so far
     if (clique_size > *max_size) {
         *max_size = clique_size;
-        for (int i=0; i<clique_size; i++) {
-            max_clique[i] = clique[i];
+        *solution_count = 0; // Reset previous solutions
+    }
+    if (clique_size == *max_size) {
+        // Store the current clique
+        solutions[*solution_count] = (int*)malloc(clique_size * sizeof(int));
+        if (solutions[*solution_count] == NULL) {
+            return; // memory allocation check
         }
+
+        for (int i = 0; i < clique_size; i++) {
+            solutions[*solution_count][i] = clique[i];
+        }
+        (*solution_count)++;
     }
 
-    // try adding vertices from the current vertex to the end of the graph
-    for (int i=vertex; i<g->size; i++) {
+    // Try adding vertices to the clique
+    for (int i = vertex; i < g->size; i++) {
         if (is_clique_backtracking(g, clique, clique_size, i)) {
             clique[clique_size] = i;
-            find_clique(g, clique, clique_size+1, max_clique, max_size, i+1);
+            find_clique(g, clique, clique_size + 1, max_size, solutions, solution_count, i + 1);
         }
     }
 }
 
 // main function to solve the clique problem (stores all the 'global' variables)
 void backtracking(graph* g) {
-    int* clique = (int*)malloc(g->size * sizeof(int));  // allocate memory for clique
+    int* clique = (int*)malloc(g->size * sizeof(int));
     if (clique == NULL) {
         return; // memory allocation check
     }
-    int* max_clique = (int*)malloc(g->size * sizeof(int));  // allocate memory for max_clique
-    if (max_clique == NULL) {
+    int** solutions = (int**)malloc(g->size * sizeof(int*));
+    if (solutions == NULL) {
         return; // memory allocation check
     }
-    int max_size = 0;  // size of the largest clique found
+    int solution_count = 0;
+    int max_size = 0;
 
-    // start from the first vertex
-    find_clique(g, clique, 0, max_clique, &max_size, 0);
+    find_clique(g, clique, 0, &max_size, solutions, &solution_count, 0);
 
-    // print the largest clique found
-    printf("Largest clique: ");
-    printf("Size: %d, Vertices: ", max_size);
-    for (int i=0; i<max_size; i++) {
-        printf("%d ", max_clique[i]);
+    // Print all largest cliques
+    printf("Largest cliques (size: %d):\n", max_size);
+    for (int i = 0; i < solution_count; i++) {
+        printf("Clique %d: ", i + 1);
+        for (int j = 0; j < max_size; j++) {
+            printf("%d ", solutions[i][j]);
+        }
+        printf("\n");
+        free(solutions[i]);
     }
-    printf("\n");
 
-    // free memory
+    // Free memory
     free(clique);
-    free(max_clique);
+    free(solutions);
 }
