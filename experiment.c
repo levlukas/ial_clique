@@ -5,6 +5,7 @@
 #include "algorithms/bruteforce.h"
 #include "algorithms/backtracking.h"
 #include "algorithms/smart_bruteforce.h"
+#include "algorithms/branchandbound.h"
 
 // Generate a random graph of given size
 graph* generate_random_graph(int size, double density) {
@@ -64,6 +65,13 @@ void run_experiments(int size, double density) {
     backtracking(g);
     end = clock();
     printf("Backtracking time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+    // Run branch and bound
+    printf("Running branch and bound...\n");
+    start = clock();
+    branch_and_bound(g);
+    end = clock();
+    printf("Branch and bound time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     // Free the graph
     graph_delete(g);

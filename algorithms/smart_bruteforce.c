@@ -5,9 +5,9 @@
 #include "../graph.h"
 
 // Globals for tracking largest cliques
-int max_clique_size = 0;
-int** largest_cliques = NULL;
-int clique_count = 0;
+int s_max_clique_size = 0;
+int** s_largest_cliques = NULL;
+int s_clique_count = 0;
 
 // Check if a subset is a clique
 bool s_is_clique(graph* g, int* subset, int size) {
@@ -25,25 +25,25 @@ bool s_is_clique(graph* g, int* subset, int size) {
 void s_find_cliques_recursive(graph* g, int* subset, int subset_size, int start) {
     // Evaluate current subset as a clique
     if (s_is_clique(g, subset, subset_size)) {
-        if (subset_size > max_clique_size) {
+        if (subset_size > s_max_clique_size) {
             // Found a larger clique: reset the results
-            max_clique_size = subset_size;
-            clique_count = 0;
+            s_max_clique_size = subset_size;
+            s_clique_count = 0;
 
             // Free previously stored cliques
-            for (int i = 0; i < clique_count; i++) {
-                free(largest_cliques[i]);
+            for (int i = 0; i < s_clique_count; i++) {
+                free(s_largest_cliques[i]);
             }
-            largest_cliques = realloc(largest_cliques, sizeof(int*));
+            s_largest_cliques = realloc(s_largest_cliques, sizeof(int*));
         }
-        if (subset_size == max_clique_size) {
+        if (subset_size == s_max_clique_size) {
             // Store the current clique
-            largest_cliques = realloc(largest_cliques, (clique_count + 1) * sizeof(int*));
-            largest_cliques[clique_count] = malloc(subset_size * sizeof(int));
+            s_largest_cliques = realloc(s_largest_cliques, (s_clique_count + 1) * sizeof(int*));
+            s_largest_cliques[s_clique_count] = malloc(subset_size * sizeof(int));
             for (int i = 0; i < subset_size; i++) {
-                largest_cliques[clique_count][i] = subset[i];
+                s_largest_cliques[s_clique_count][i] = subset[i];
             }
-            clique_count++;
+            s_clique_count++;
         }
     }
 
@@ -60,23 +60,23 @@ void s_bruteforce(graph* g) {
     int* subset = malloc(g->size * sizeof(int));
 
     // Reset global variables
-    max_clique_size = 0;
-    clique_count = 0;
-    largest_cliques = NULL;
+    s_max_clique_size = 0;
+    s_clique_count = 0;
+    s_largest_cliques = NULL;
 
     // Start recursive subset generation
     s_find_cliques_recursive(g, subset, 0, 0);
 
     // Print results
-    printf("Largest cliques (size %d):\n", max_clique_size);
-    for (int i = 0; i < clique_count; i++) {
+    printf("Largest cliques (size %d):\n", s_max_clique_size);
+    for (int i = 0; i < s_clique_count; i++) {
         printf("Clique %d: ", i + 1);
-        for (int j = 0; j < max_clique_size; j++) {
-            printf("%d ", largest_cliques[i][j]);
+        for (int j = 0; j < s_max_clique_size; j++) {
+            printf("%d ", s_largest_cliques[i][j]);
         }
         printf("\n");
-        free(largest_cliques[i]);  // Free each stored clique
+        free(s_largest_cliques[i]);  // Free each stored clique
     }
-    free(largest_cliques);  // Free the array of cliques
+    free(s_largest_cliques);  // Free the array of cliques
     free(subset);  // Free the subset array
 }
