@@ -7,13 +7,14 @@
 
 // Generate a random graph of given size
 graph* generate_random_graph(int size, double density) {
+    srand(time(NULL));  // Seed the random number generator
     graph* g = graph_init(size);
 
     // Populate the adjacency matrix with random edges
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size; j++) {
             // Add an edge with the given density probability
-            int edge = (rand() / (double)RAND_MAX) < density ? 1 : 0;
+            int edge = ((double)rand() / RAND_MAX) < density ? 1 : 0;
             g->matrix[i][j] = edge;
             g->matrix[j][i] = edge;  // Ensure symmetry for undirected graph
         }
