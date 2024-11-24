@@ -1,10 +1,15 @@
 # Greates Clique Problem
 - This project tries to compare multiple algorithms of finding the largest clique in a non-oriented graph.
   
-## Contents
+## Summary
 - This program should contain a way of I/O of the non-oriented graphs
 - It should contain multiple algos for finding greatest clique
 - It should compare time complexity of each algo experimentally to the theoretical complexity
+
+## Algorithms
+- `bruteforce.c` vytvoří všechny možné podgrafy a hledá v nich kliky, ty největší vrátí. Podgrafy vytváří díky bitové interpretaci těchto podgrafů, a tak je vše paměťově náročné. Algoritmus má pak problém s maticemi sousedů nad velikost 32.
+- `smart_bruteforce.c` narozdíl od výše zmíněného používá pro interpretaci matice pole (array) o vhodné velikosti. Paměť pro každý z podgrafů alokuje dynamicky a uvolňuje ji, pokud je to vhodné.
+- `backtracking.c`
 
 ## Zadani
 Náhradní projekt je určen pouze pro studenty, kteří v předmětu IFJ neřeší souběžný projekt (např. studenti FEKT nebo studenti opakující předmět). Tento projekt je týmový a řeší jej trojice nebo čtveřice studentů.
