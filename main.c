@@ -23,8 +23,15 @@ int main() {
     graph_delete(g);
 
     // Example 2: Compare time complexity with random graphs
+    printf("\n========================================");
     printf("\nComparing algorithms on random graphs:\n");
+    printf("========================================\n");
     run_experiments(10, 0.5);  // 10 vertices, 50% edge density
+    printf("\n========================================\n");
+    run_experiments(20, 0.5);  // 10 vertices, 50% edge density
+    printf("\n========================================\n");
+    run_experiments(50, 0.5);  // 10 vertices, 50% edge density - this is already failing for bruteforce
+    printf("\n========================================\n");
 
     return 0;
 }
