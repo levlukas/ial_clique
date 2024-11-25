@@ -23,6 +23,21 @@ int** s_largest_cliques = NULL; // dynamicky alokovane pole ukazatelu na pole vr
 int s_clique_count = 0;         // pocet nejvetsich klik
 
 /*
+ * Funkce pro uvolneni pameti alokovane pro nejvetsi kliky.
+ */
+void s_free_largest_cliques() {
+    if (s_largest_cliques != NULL) {
+        for (int i = 0; i < s_clique_count; i++) {
+            free(s_largest_cliques[i]);
+        }
+        free(s_largest_cliques);
+        s_largest_cliques = NULL;
+        s_clique_count = 0;
+    }
+}
+
+
+/*
  * Funkce pro zjisteni, zda je dana podmnozina vrcholu grafu klika.
  * Parametry:
  * - graph* g: ukazatel na strukturu grafu
@@ -52,23 +67,35 @@ bool s_is_clique(graph* g, int* subset, int size) {
  * - int start: index prvniho vrcholu pro dalsi podmnozinu
  */
 void s_find_cliques_recursive(graph* g, int* subset, int subset_size, int start) {
-    // Evaluate current subset as a clique
+    // kontrola, zda je aktualni podmnozina klika
     if (s_is_clique(g, subset, subset_size)) {
-        if (subset_size > s_max_clique_size) {
-            // Found a larger clique: reset the results
+        if (subset_size > s_max_clique_size) {  // nalezena vetsi klika
+            // vetsi klika byla nalezena -> aktualizace globalnich promennych
+            s_free_largest_cliques();
             s_max_clique_size = subset_size;
-            s_clique_count = 0;
 
-            // Free previously stored cliques
+            // uvolneni predchozich nejvetsich klik
             for (int i = 0; i < s_clique_count; i++) {
                 free(s_largest_cliques[i]);
             }
             s_largest_cliques = realloc(s_largest_cliques, sizeof(int*));
+            if (s_largest_cliques == NULL) {  // kontrola alokace
+                fprintf(stderr, "Memory allocation failed.\n");
+                return;
+            }
         }
-        if (subset_size == s_max_clique_size) {
-            // Store the current clique
+        if (subset_size == s_max_clique_size) {  // nalezena klika s aktualni maximalni velikosti
+            // alokace pameti pro novou nejvetsi kliku a aktualizace globalnich promennych
             s_largest_cliques = realloc(s_largest_cliques, (s_clique_count + 1) * sizeof(int*));
+            if (s_largest_cliques == NULL) {  // kontrola alokace
+                fprintf(stderr, "Memory allocation failed.\n");
+                return;
+            }
             s_largest_cliques[s_clique_count] = malloc(subset_size * sizeof(int));
+            if (s_largest_cliques[s_clique_count] == NULL) {  // kontrola alokace
+                fprintf(stderr, "Memory allocation failed.\n");
+                return;
+            }
             for (int i = 0; i < subset_size; i++) {
                 s_largest_cliques[s_clique_count][i] = subset[i];
             }
@@ -76,7 +103,7 @@ void s_find_cliques_recursive(graph* g, int* subset, int subset_size, int start)
         }
     }
 
-    // Generate further subsets
+    // rekurzivni volani pro vsechny dalsi vrcholy
     for (int i = start; i < g->size; i++) {
         subset[subset_size] = i;
         s_find_cliques_recursive(g, subset, subset_size + 1, i + 1);
@@ -85,22 +112,27 @@ void s_find_cliques_recursive(graph* g, int* subset, int subset_size, int start)
 
 /*
  * Funkce pro nalezeni vsech nejvetsich klik v grafu pomoci metody pristupu hrubou silou.
+ * Spravuje globalni promenne pro urceni vysledku (ty jsou vyuzivany dilcimi funkcemi).
+ * Vyvola rekurzivni vytvareni podmnozin a jejich vyhodnoceni.
  * Parametry:
  * - graph* g: ukazatel na strukturu grafu
  */
 void s_bruteforce(graph* g) {
-    // Allocate space for the subset
+    // alokace pameti pro pole vrcholu tvoricich podmnozinu 
     int* subset = malloc(g->size * sizeof(int));
+    if (subset == NULL) {  // kontrola alokace
+        fprintf(stderr, "Memory allocation failed.\n");
+        return;
+    }
 
-    // Reset global variables
+    // obnova globalnich promennych
+    s_free_largest_cliques();
     s_max_clique_size = 0;
-    s_clique_count = 0;
-    s_largest_cliques = NULL;
 
-    // Start recursive subset generation
+    // rekurzivni vyhodnoceni podmnozin
     s_find_cliques_recursive(g, subset, 0, 0);
 
-    // Print results
+    // tisk vysledku
     printf("Largest cliques (size %d):\n", s_max_clique_size);
     for (int i = 0; i < s_clique_count; i++) {
         printf("Clique %d: ", i + 1);
@@ -108,8 +140,8 @@ void s_bruteforce(graph* g) {
             printf("%d ", s_largest_cliques[i][j]);
         }
         printf("\n");
-        free(s_largest_cliques[i]);  // Free each stored clique
+        free(s_largest_cliques[i]);  // uvolneni pameti pro pole vrcholu
     }
-    free(s_largest_cliques);  // Free the array of cliques
-    free(subset);  // Free the subset array
+    free(s_largest_cliques);  // uvolneni pameti pro pole ukazatelu
+    free(subset);  // uvolneni pameti pro pole vrcholu
 }
