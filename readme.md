@@ -8,9 +8,7 @@
 
 ## Algorithms
 - `bruteforce.c` vytvoří všechny možné podgrafy a hledá v nich kliky, ty největší vrátí. Podgrafy vytváří díky bitové interpretaci těchto podgrafů, a tak je vše paměťově náročné. Algoritmus má pak problém s maticemi sousedů nad velikost 32. Pracuje na základě bitové masky. Takže všechny subsety jsou stanoveny umocňováním dvojky na počet vrcholů, odtud inkrementujeme bitovou masku až dokud nedostaneme stejné číslo jako 2^V (tzn. všechny kombinace všech možných vrcholů).
-- `smart_bruteforce.c` narozdíl od výše zmíněného používá pro interpretaci matice pole (array) o vhodné velikosti. Paměť pro každý z podgrafů alokuje dynamicky a uvolňuje ji, pokud je to vhodné.
 - `backtracking.c`
-- `branchandbound.c` systematically explores the solution space while pruning subspaces that cannot possibly contain a solution larger than the current best. This approach combines the strengths of backtracking and brute force but introduces bounds to significantly reduce unnecessary computations.
 
 ## Zadani
 Náhradní projekt je určen pouze pro studenty, kteří v předmětu IFJ neřeší souběžný projekt (např. studenti FEKT nebo studenti opakující předmět). Tento projekt je týmový a řeší jej trojice nebo čtveřice studentů.
