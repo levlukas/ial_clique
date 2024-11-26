@@ -4,84 +4,106 @@
 #include <stdbool.h>
 #include "../graph.h"
 
-// check if adding a vertex forms a clique
+/*
+ * Tato funkce kontroluje, zda pridani vrcholu (vertex) do podgrafu zachova tento
+ * podgraf jako kliku.
+ * Parametry:
+ * - graph* g: ukazatel na strukturu grafu
+ * - int* clique: pole vrcholu tvoricich kliku
+ * - int clique_size: velikost kliky
+ * - int vertex: pridavany vrchol
+ */
 int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex) {
     for (int i=0; i<clique_size; i++) {
-        if (g->matrix[clique[i]][vertex] == 0) {  // if there is no edge at [i][vertex]
-            return 0;  // not a clique
+        if (g->matrix[clique[i]][vertex] == 0) {  // pokud na [i][vertex] neni vrchol pro vsechna i z kliky
+            return 0;  // nejedna se o kliku
         }
     }
-    return 1;  // great success
+    return 1;  // jedna se o kliku
 }
 
+
+/*
+ * Rekurzivni funkce, ktera zahrnuje zpetne vyhledavani.
+ * Parametry:
+ * - graph* g: ukazatel na strukturu grafu
+ * - int* current_clique: pole vrcholu tvoricich aktualni kliku
+ * - int clique_size: velikost kliky
+ * - int*** largest_cliques: pole ukazatelu na pole vrcholu tvoricich nejvetsi kliky
+ * - int* max_size: velikost nejvetsi kliky
+ * - int* clique_count: pocitadlo nejvetsich klik
+ * - int start: index prvniho vrcholu pro dalsi podmnozinu
+ */
 void find_clique_backtracking(graph* g, int* current_clique, int clique_size, int*** largest_cliques, int* max_size, int* clique_count, int start) {
-    // If the current clique is larger than the max clique found so far
+    // aktualizace nejvetsi nalezene kliky
     if (clique_size > *max_size) {
         *max_size = clique_size;
 
-        // Free previously stored cliques
+        // uvolneni pameti pro predchozi nejvetsi kliky
         for (int i = 0; i < *clique_count; i++) {
             free((*largest_cliques)[i]);
         }
         free(*largest_cliques);
 
-        // Allocate new space for largest cliques
+        // obnoveni promennych
         *largest_cliques = NULL;
         *clique_count = 0;
     }
 
-    // If the current clique matches the max size, store it
+    // ulozi aktualni kliku, pokud se velikosti shoduje s nejvetsimi nalezenymi
     if (clique_size == *max_size) {
         *largest_cliques = realloc(*largest_cliques, (*clique_count + 1) * sizeof(int*));
-        if (*largest_cliques == NULL) {
+        if (*largest_cliques == NULL) {  // kontrola alokace
             fprintf(stderr, "Memory allocation failed.\n");
             exit(1);
         }
 
         (*largest_cliques)[*clique_count] = malloc(clique_size * sizeof(int));
-        if ((*largest_cliques)[*clique_count] == NULL) {
+        if ((*largest_cliques)[*clique_count] == NULL) {  // kontrola alokace
             fprintf(stderr, "Memory allocation failed.\n");
             exit(1);
         }
-        for (int i = 0; i < clique_size; i++) {
+        for (int i = 0; i < clique_size; i++) {  // kopirovani vrcholu do nejvetsi kliky
             (*largest_cliques)[*clique_count][i] = current_clique[i];
         }
-        (*clique_count)++;
+        (*clique_count)++;  // inkrementace pocitadla
     }
 
-    // Backtracking step: Try adding vertices to the current clique
+    // zpetne vyhledavani
     for (int i = start; i < g->size; i++) {
-        // Check if adding vertex `i` forms a valid clique
+        // zkontroluj pridani vrcholu 'i'
         if (is_clique_backtracking(g, current_clique, clique_size, i)) {
-            // Add vertex `i` to the current clique
             current_clique[clique_size] = i;
 
-            // Recur with the updated clique
+            // pokud vytvori podmnozina s i kliku, potom zavolej rekurzivne pro start = i + 1, coz je dalsi vrchol, ktery se muze pridat
             find_clique_backtracking(g, current_clique, clique_size + 1, largest_cliques, max_size, clique_count, i + 1);
-
-            // Backtrack: No explicit action needed because we overwrite `current_clique[clique_size]` on the next loop iteration
         }
+        // pokud podminka neplati, potom se vetev od i dal nerozsiruje, ale namisto toho se rekurze vynori
     }
 }
 
 
-
+/*
+ * Hlavni funkce pro algoritmus zpetneho vyhledavani.
+ * Parametry:
+ * - graph* g: ukazatel na strukturu grafu
+ */
 void backtracking(graph* g) {
-    // Allocate memory for tracking current clique and storing results
-    int* current_clique = (int*)malloc(g->size * sizeof(int));  // Holds vertices of the current clique
-    int** largest_cliques = NULL;                               // Array of largest cliques
-    int max_size = 0;                                           // Size of the largest clique found
-    int clique_count = 0;                                       // Number of largest cliques found
+    // alokace pameti pro aktualni kliku
+    int* current_clique = (int*)malloc(g->size * sizeof(int));  // pole vrcholu tvoricich aktualni kliku
+    int** largest_cliques = NULL;                               // pole ukazatelu na pole vrcholu tvoricich nejvetsi kliky
+    int max_size = 0;                                           // velikost nejvetsi kliky
+    int clique_count = 0;                                       // pocitadlo nejvetsich klik
 
-    if (current_clique == NULL) {
+    if (current_clique == NULL) {  // kontrola alokace
         fprintf(stderr, "Memory allocation failed.\n");
         return;
     }
 
-    // Call the backtracking function
+    // zavolej rekurzivni funkci pro zpetne vyhledavani (provadi zpetne vyhledavani) a manipuluje s promennymi definovanymi vyse
     find_clique_backtracking(g, current_clique, 0, &largest_cliques, &max_size, &clique_count, 0);
 
-    // Print results
+    // tisk vysledku
     printf("Largest cliques (size: %d):\n", max_size);
     for (int i = 0; i < clique_count; i++) {
         printf("Clique %d: ", i + 1);
@@ -89,10 +111,10 @@ void backtracking(graph* g) {
             printf("%d ", largest_cliques[i][j]);
         }
         printf("\n");
-        free(largest_cliques[i]);  // Free each stored clique
+        free(largest_cliques[i]);  // uvolneni pameti pro pole vrcholu
     }
 
-    // Free allocated memory
+    // uvolneni pameti
     free(largest_cliques);
     free(current_clique);
 }

@@ -1,8 +1,8 @@
 #include "graph.h"
 #include "algorithms/bruteforce.h"
 #include "algorithms/backtracking.h"
-#include "algorithms/smart_bruteforce.h"
-#include "algorithms/branchandbound.h"
+// #include "algorithms/smart_bruteforce.h"
+// #include "algorithms/branchandbound.h"
 #include "experiment.h"
 
 int main() {
@@ -17,14 +17,8 @@ int main() {
         printf("\nFinding the largest clique using bruteforce...\n");
         bruteforce(g);
 
-        printf("\nFinding the largest clique using smart bruteforce...\n");
-        s_bruteforce(g);
-
         printf("\nFinding the largest clique using backtracking...\n");
         backtracking(g);
-
-        printf("\nFinding the largest clique using branch and bound...\n");
-        branch_and_bound(g);
     } else {
         printf("Failed to load the graph.\n");
     }

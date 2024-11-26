@@ -25,7 +25,7 @@ int s_clique_count = 0;         // pocet nejvetsich klik
 /*
  * Funkce pro uvolneni pameti alokovane pro nejvetsi kliky.
  */
-void s_free_largest_cliques() {
+void s_free_largest_cliques() {  // tato funkce je problematicka - double free
     if (s_largest_cliques != NULL) {
         for (int i = 0; i < s_clique_count; i++) {
             free(s_largest_cliques[i]);

@@ -1,7 +1,7 @@
 # Variables
 CC = gcc               # Compiler
 CFLAGS = -Wall -g      # Compiler flags for warnings and debugging
-SRC = main.c graph.c algorithms/bruteforce.c algorithms/backtracking.c experiment.c algorithms/smart_bruteforce.c algorithms/branchandbound.c
+SRC = main.c graph.c algorithms/bruteforce.c algorithms/backtracking.c experiment.c
 TARGET = clique_problem     # Final executable name
 
 # Default target

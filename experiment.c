@@ -4,8 +4,9 @@
 #include "graph.h"
 #include "algorithms/bruteforce.h"
 #include "algorithms/backtracking.h"
-#include "algorithms/smart_bruteforce.h"
-#include "algorithms/branchandbound.h"
+// #include "algorithms/smart_bruteforce.h"
+// #include "algorithms/branchandbound.h"
+// #include "algorithms/bronkerbosch.h"
 
 // Generate a random graph of given size
 graph* generate_random_graph(int size, double density) {
@@ -53,11 +54,11 @@ void run_experiments(int size, double density) {
     printf("Bruteforce time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     // Run smart bruteforce
-    printf("Running smart bruteforce...\n");
-    start = clock();
-    s_bruteforce(g);
-    end = clock();
-    printf("Smart bruteforce time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
+    // printf("Running smart bruteforce...\n");
+    // start = clock();
+    // s_bruteforce(g);
+    // end = clock();
+    // printf("Smart bruteforce time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     // Run backtracking
     printf("Running backtracking...\n");
@@ -67,11 +68,18 @@ void run_experiments(int size, double density) {
     printf("Backtracking time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     // Run branch and bound
-    printf("Running branch and bound...\n");
-    start = clock();
-    branch_and_bound(g);
-    end = clock();
-    printf("Branch and bound time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
+    // printf("Running branch and bound...\n");
+    // start = clock();
+    // branch_and_bound(g);
+    // end = clock();
+    // printf("Branch and bound time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+    // Run Bron-Kerbosch
+    // printf("Running bron-kerbosch...\n");
+    // start = clock();
+    // bron_kerbosch_clique(g);
+    // end = clock();
+    // printf("Bron-kerbosch time: %.6f seconds\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     // Free the graph
     graph_delete(g);
