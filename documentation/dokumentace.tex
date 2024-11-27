@@ -9,6 +9,7 @@
 \usepackage{hyperref}
 \usepackage[left=3cm,right=3cm,bottom=3.5cm]{geometry}
 \usepackage{graphicx,lipsum}
+\usepackage{amsmath}
 \usepackage{cleveref}
 \usepackage{siunitx}
 \usepackage[table,xcdraw]{xcolor}
@@ -17,6 +18,7 @@
 \usepackage{array}
 \usepackage{fancyhdr} % For custom headers and footers
 \usepackage{graphicx}
+\usepackage{listings}
 
 \title{\textbf{Semestrální práce}\\Největší klika v neorientovaném grafu\\[5pt]IAL}
 \author{Lukáš Lev, 256660}
@@ -24,9 +26,29 @@
 
 \pagestyle{fancy}
 \fancyhf{} % Clear default header and footer
-\fancyhead[R]{\small\textcolor{gray}\leftmark} % Left header with the section name
-\fancyfoot[R]{\thepage} % Centered footer with page number
+% Header with section and subsection
+\fancyhead[R]{\small\textcolor{gray}{\nouppercase{\leftmark}}} % Section name
+%\fancyhead[R]{\small\textcolor{gray}{\nouppercase{\rightmark}}} % Subsection name
+
+% Footer with a picture, author name, and some text
+\fancyfoot[L]{\raisebox{-15pt}{\includegraphics[width=2.5cm]{dokumentace/pic/FIT_trans.png}}}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{\small\textcolor{gray}{Největší klika v neorientoaném grafu\\Lukáš Lev, 256660}} % Add your desired text
 \renewcommand{\headrulewidth}{0pt}
+
+% code snippets
+\lstset{
+  language=C,                     % Choose the language of the code
+  basicstyle=\ttfamily\footnotesize, % Set font style and size
+  keywordstyle=\color{blue},      % Style for keywords
+  stringstyle=\color{red},        % Style for strings
+  commentstyle=\color{gray},      % Style for comments
+  numbers=left,                   % Add line numbers
+  numberstyle=\tiny\color{gray},  % Style for line numbers
+  stepnumber=1,                   % Line numbering step
+  breaklines=true,                % Automatic line breaking
+  frame=single,                   % Frame around the code
+}
 
 \begin{document}
 
@@ -34,59 +56,234 @@
 \newpage
 
 \section{Zadání} \label{sec:zadani}
-Náhradní projekt je určen pouze pro studenty, kteří v předmětu IFJ neřeší souběžný projekt (např. studenti FEKT nebo studenti opakující předmět). Tento projekt je týmový a řeší jej trojice nebo čtveřice studentů.\\
-
-\noindent
-\textbf{Zadání varianty}
-\textit{Klika grafu} je podgraf, který je úplným grafem (=kterýkoliv vrchol kliky je tedy spojen hranou se všemi ostatními vrcholy kliky).\\
-
-\noindent
-Vytvořte program pro hledání největší kliky v neorientovaném grafu. Pokud existuje více řešení, nalezněte všechna. Výsledky prezentujte vhodným způsobem. Součástí projektu bude načítání grafů ze souboru a vhodné testovací grafy. V dokumentaci uveďte teoretickou složitost úlohy a porovnejte ji s experimentálními výsledky.\\
-
-\noindent
-\textbf{Všeobecné informace a pokyny k náhradním projektům}
-
-\noindent
-Řešení bude vypracováno v jazyce C a bude přeložitelné (pomocí příkazu make) na serveru eva.fit.vutbr.cz. Všechny zdrojové kódy, hlavičkové soubory, testovací data aj. budou logicky separovány a uloženy v příhodně pojmenovaných podadresářích. Použití nestandardních knihoven není dovoleno. Všechny části zadání varianty jsou nutnou součástí řešení.\\
-
-\noindent
-Celkové hodnocení projektu sestává z následujících kategorií:
-\begin{itemize}
-    \item funkčnost implementace (až 6 bodů),
-    \item projektová dokumentace (až 4 body),
-    \item obhajoba (až 5 bodů).
-\end{itemize}
-
-\noindent
-Řešení zabalené v jediném ZIP archivu je odevzdáváno pouze vedoucím týmu prostřednictvím STUDISu. Závazné pokyny pro vypracování projektové dokumentace a doporučení pro závěrečné obhajoby naleznete v Moodlu v sekci Projekty.
+    Náhradní projekt je určen pouze pro studenty, kteří v předmětu IFJ neřeší souběžný projekt (např. studenti FEKT nebo studenti opakující předmět). Tento projekt je týmový a řeší jej trojice nebo čtveřice studentů.\\
+    
+    \noindent
+    \textbf{Zadání varianty}
+    \textit{Klika grafu} je podgraf, který je úplným grafem (=kterýkoliv vrchol kliky je tedy spojen hranou se všemi ostatními vrcholy kliky).\\
+    
+    \noindent
+    Vytvořte program pro hledání největší kliky v neorientovaném grafu. Pokud existuje více řešení, nalezněte všechna. Výsledky prezentujte vhodným způsobem. Součástí projektu bude načítání grafů ze souboru a vhodné testovací grafy. V dokumentaci uveďte teoretickou složitost úlohy a porovnejte ji s experimentálními výsledky.\\
+    
+    \noindent
+    \textbf{Všeobecné informace a pokyny k náhradním projektům}
+    
+    \noindent
+    Řešení bude vypracováno v jazyce C a bude přeložitelné (pomocí příkazu make) na serveru eva.fit.vutbr.cz. Všechny zdrojové kódy, hlavičkové soubory, testovací data aj. budou logicky separovány a uloženy v příhodně pojmenovaných podadresářích. Použití nestandardních knihoven není dovoleno. Všechny části zadání varianty jsou nutnou součástí řešení.\\
+    
+    \noindent
+    Celkové hodnocení projektu sestává z následujících kategorií:
+    \begin{itemize}
+        \item funkčnost implementace (až 6 bodů),
+        \item projektová dokumentace (až 4 body),
+        \item obhajoba (až 5 bodů).
+    \end{itemize}
+    
+    \noindent
+    Řešení zabalené v jediném ZIP archivu je odevzdáváno pouze vedoucím týmu prostřednictvím STUDISu. Závazné pokyny pro vypracování projektové dokumentace a doporučení pro závěrečné obhajoby naleznete v Moodlu v sekci Projekty.
     
 \section{Abstrakt} \label{sec:abstrakt}
-Tento projekt byl proveden podle zadání z kapitoly \ref{sec:zadani}, jež bylo poskytnuto vyučujícím.\\
+    Tento projekt byl proveden podle zadání z kapitoly \ref{sec:zadani}, jež bylo poskytnuto vyučujícím.\\
+    
+    \noindent
+    Předmětem tohoto projektu je hledání \textbf{největší kliky v neorientovaném grafu}, což je jeden z typických problémů v teorii grafů \textbf{TODO: citace}. Tato problematika je krátce popsána v kapitole \ref{sec:zadani}.\\
+    
+    \noindent
+    Pro hledání největší kliky v neorientovaném grafu byly navrženy dva algoritmy, a to sice
+    \begin{itemize}
+        \item algoritmus metodou hrubé síly (anglicky \textit{brute force}),
+        \item algoritmus zpětného vyhledávání (anglicky \textit{backtracking}).
+    \end{itemize}
+    Pro každý z těchto algoritmů byla stanovena časová komplexita nejprve teoreticky a následně také experimentálně pomocí jednoduchého programu v jazyce C.
+    
+\section{Úvod} \label{sec:teorie}
+    \subsection{Teorie}
+        \subsubsection{Zkoumané objekty}
+            \paragraph{Graf} je základní objekt teorie grafů. Skládá se z uzlů (vrcholů) a hran.\cite{slu_zaklad-teo-grafu}
+            
+            \paragraph{Neorientovaný graf}
+            je graf, jehož všechny uzly jsou symetricky spojeny neorientovanou hranou.\cite{slu_zaklad-teo-grafu}
+            
+            \paragraph{Úplný graf} je neorientovaný graf, pro jehož každou dvojici vrcholů existuje právě jedna neorientovaná hrana.\cite{slu_zaklad-teo-grafu}
+            
+            \paragraph{Klika} (anglicky \textit{clique}) je podmnožina vrcholů neorientovaného grafu. Tato podmnožina tvoří úplný graf.\cite{cliq-definition}
+    
+        \subsubsection{Teorie použitých algoritmů}
 
-\noindent
-Předmětem tohoto projektu je hledání \textbf{největší kliky v neorientovaném grafu}, což je jeden z typických problémů v teorii grafů \textbf{TODO: citace}. Tato problematika je krátce popsána v kapitole \ref{sec:zadani}.\\
+\section{Implementace v jazyce C}  \label{sec:implem}
+    Podle zadání (kapitola \ref{sec:zadani}), byly oba algoritmy vypracovány v jazyce C. Další rysy implementace, které vycházejí ze zadání, se týkají zavedených datových struktur (kapitola \ref{subsec:graph_imp}). Implementace obou algoritmů vykazují požadované chování a v případě výskytu několika klik o maximální velikosti nacházejí všechny tyto výsledky. Zároveň, nenachází-li se v grafu žádná hrana, jsou nalezeny všechny vrcholy jako největší kliky.\\
 
-\noindent
-Pro nalezení největší kliky v neorientovaném grafu bylo vypracováno několik algoritmů, a to sice:
-\begin{itemize}
-    \item Brute force algoritmus,
-    \item Dynamický brute force algoritmus,
-    \item Backtracking algoritmus,
-    \item Branch and bound algoritmus.
-\end{itemize}
-Pro každý z těchto algoritmů byla stanovena časová komplexita nejprve teoreticky a následně také experimentálně pomocí jednoduchého programu v jazyce C.
+    \subsection{Reprezentace neorientovaného grafu} \label{subsec:graph_imp}
+        Podle zadání (kapitola \ref{sec:zadani}) je třeba vytvořit takovou datovou strukturu neorientovaného grafu, kterou lze snadno reprezentovat záznamem do jednoduchého souboru.\\
 
-\section{Teoretický úvod} \label{sec:teorie}
-\subsection{Zkoumané objekty}
-\paragraph{Graf} je základní objekt teorie grafů. Skládá se z uzlů (vrcholů) a hran.\cite{slu_zaklad-teo-grafu}
+        \noindent
+        Jednou z možných variant je \textbf{matice sousednosti}. Tato matice je čtvercová a, jelikož v rámci implementace neuvažujeme hrany uzlů vedoucí na sebe sama, diagonála této matice je nulová. Pro ostatní prvky platí, že vyjadřují přítomnost hrany mezi uzly s indexem shodným s řádkem či sloupcem matice.\\
 
-\paragraph{Neorientovaný graf}
-je graf, jehož všechny uzly jsou symetricky spojeny neorientovanou hranou.\cite{slu_zaklad-teo-grafu}
+        \noindent
+        Následující rovnice uvádí názorný příklad matice sousednosti (grafická reprezentace této matice je na obr. \ref{fig:graf1}). Prvky této matice jsou hrany mezi vrcholy označenými indexem. Tedy například prvek $h_{04} = 1$ tvrdí, že mezi uzly 0 a 1 se nachází hrana, zatímco mezi uzly 0 a 1 nikoliv ($h_{01} = 0$).
 
-\paragraph{Úplný graf} je neorientovaný graf, pro jehož každou dvojici vrcholů existuje právě jedna neorientovaná hrana.\cite{slu_zaklad-teo-grafu}
+        \begin{equation} \label{eq:adj-mat}
+            \mathrm{M_s} = 
+            \begin{pmatrix}
+                h_{00} & h_{01} & h_{02} & h_{03} & h_{04} \\
+                h_{10} & h_{11} & h_{12} & h_{13} & h_{14} \\
+                h_{20} & h_{21} & h_{22} & h_{23} & h_{24} \\
+                h_{30} & h_{31} & h_{32} & h_{33} & h_{34} \\
+                h_{40} & h_{41} & h_{42} & h_{43} & h_{44}
+            \end{pmatrix} = 
+            \begin{pmatrix}
+                0 & 0 & 0 & 1 & 1 \\
+                0 & 0 & 1 & 0 & 1 \\
+                0 & 1 & 0 & 1 & 0 \\
+                1 & 0 & 1 & 0 & 1 \\
+                1 & 1 & 0 & 1 & 0
+            \end{pmatrix}
+        \end{equation}
 
-\paragraph{}
+        \noindent
+        Zdrojový kód pro implementaci této matice se nachází v souboru \lstinline{graph.c}. V něm je definována struktura \lstinline{graph} popsaná níže.
 
+        \begin{lstlisting}[caption={Definice struktury neorientovaného grafu.},captionpos=b]
+typedef struct {
+    int size;  // velikost matice (odpovida poctu uzlu)
+    int** matrix;  // 2D pole pro ulozeni prvku matice
+} graph;
+        \end{lstlisting}
+
+        \noindent
+        Soubor \lstinline{graf.c} také obsahuje řadu funkcí vztahujících se k těmto grafům. Těmito funkcemi jsou:
+        \begin{itemize}
+            \item \lstinline{graph* graph_init(int size)} pro inicializaci prázdného grafu s vhodnou velikostí,
+            \item \lstinline{void graph_delete(graph* g)} pro smazání grafu a uvolnění jeho paměti,
+            \item \lstinline{int graph_read_size(const char* filename)} pro přečtení velikosti grafu (počtu uzlů) v matici sousednosti ze souboru,
+            \item \lstinline{int graph_read(graph* g, const char* filename)} pro přečtení matice sousednosti ze souboru, vlastnosti grafu jsou uloženy do vstupní proměnné \lstinline{g} (nevyužívá funkci \lstinline{graph_read_size},
+            \item \lstinline{int graph_write(graph* g, const char* filename)} pro zápis matice sousednosti do souboru,
+            \item \lstinline{void graph_print(graph* g)} pro vytištění grafu do terminálu
+        \end{itemize}
+
+        \noindent
+        Soubory, které slouží pro ukládání grafu, jsou označeny příponou \lstinline{.gh} a matici sousednosti uchovávají v následujícím formátu, kde první řádek reprezentuje velikost matice a ostatní řádky informace o jejich prvcích:
+        \begin{lstlisting}[caption={Zápis matice v \lstinline{.gh} souboru.},captionpos=b,label={code:zapis_matice}]
+            5
+            0 0 0 1 1
+            0 0 1 0 1
+            0 1 0 1 0
+            1 0 1 0 1
+            1 1 0 1 0
+        \end{lstlisting}
+        Tato matice je reprezentována také graficky na obrázku \ref{fig:graf1}.
+        \begin{figure}[bh]
+            \centering
+            \includegraphics[width=0.5\linewidth]{dokumentace/pic/graf_1.png}
+            \caption{Grafická reprezentace neorientovaného grafu z kapitoly \ref{subsub:graph}.}
+            \label{fig:graf1}
+        \end{figure}
+
+        \noindent
+        Bližší popis implementovaného kódu je součástí komentářů v souboru \lstinline{graph.c}.
+
+    \subsection{Implementace algoritmu metody hrubou silou}
+        Zdrojový kód pro algoritmus hledání největší kliky v neorientovaném grafu metodou hrubé síly (anglicky \textit{brute force}) je obsahem souboru \lstinline{algorithms/bruteforce.c}. Kód operuje se strukturou definovanou v kapitole \ref{subsec:graph_imp}. Samotný soubor obsahuje podrobné komentáře, a tak je shrnutí implementace v této kapitole pouze zběžné.\\
+
+        \noindent
+        Protože matice sousednosti obsahuje pouze prvky s hodnotou 1 nebo 0, byla zvolena reprezentace vybrané podmnožiny vrcholů pomocí binární masky. Na tu je referováno celým číslem \lstinline{int subset}, které po převodu do binární soustavy určuje, které uzly jsou vybrány. Indexace se shoduje s indexací uzlů v matici.\\
+
+        Například pro matici definovanou v souboru v ukázce kódu \ref{code:zapis_matice} použijeme masku \lstinline{subset} určenou číslem 10. Pro masku \lstinline{subset} tak platí:
+        \begin{equation}
+            10_{(10)} = 01010_{(2)} \implies u_{0}u_{1}u_{2}u_{3}u_{4}
+        \end{equation}
+        \noindent
+        Proto jsou maskou vybrány vrcholy na indexech 1 a 3 graficky reprezentovány na obrázku \ref{fig:graf_maska}. Pro vytvoření všech podgrafů vstupního grafu definovaného maticí sousednosti stačí iterativně inkrementovat hodnotu masky od nuly až do hodnoty $\mathbf{2^{n}}$, kde $n$ je počet uzlů v grafu. Při iteraci těmito podgrafy stačí sledovat, zda jsou klikami, a pokud ano, pak také jejich velikost. Největší kliky jsou uchovávány v proměnné \lstinline{int** largest_cliques} ve funkci \lstinline{void bruteforce(graph* g)}.\\
+        
+        \begin{figure}[th]
+            \centering
+            \includegraphics[width=0.5\linewidth]{dokumentace/pic/graf_1_13.png}
+            \caption{Označení uzlů neorientovaného grafu maskou o hodnotě 10.}
+            \label{fig:graf_maska}
+        \end{figure}
+
+        \noindent
+        Soubor \lstinline{algorithms/bruteforce.c} obsahuje následující funkce:
+        \begin{itemize}
+            \item \lstinline{int is_clique_bruteforce(graph* g, int subset)} pro kontrolu, zda podgraf označený maskou \lstinline{subset} je klikou (zda je matice, krom diagonály, naplněna hodnotami 1),
+            \item \lstinline{void bruteforce(graph* g)} pro iterativní hledání největší kliky. Tato funkce vytiskne všechny největší nalezené kliky do terminálu.
+        \end{itemize}
+
+    \subsection{Implementace algoritmu metody zpětného vyhledávání}
+        Zdrojový kód pro hledání největší kliky v neorientovaném grafu pomocí metody zpětného vyhledávání je obsažen v souboru \lstinline{algorithms/backtracking.c}. V něm je pro tuto metodu použito následujících funkcí:
+        \begin{itemize}
+            \item \lstinline{int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex)} pro kontrolu, zda přidání uzlu (neboli vrcholu, tedy \lstinline{vertex}) zachová vlastnost kliky podgrafu \lstinline{g},
+            \item \lstinline{void find_clique_backtracking(graph* g, int* current_clique, int clique_size, int*** largest_cliques, int* max_size, int* clique_count, int start)} pro rekurzivní hledání největší kliky,
+            \item \lstinline{void backtracking(graph* g)} pro správu proměnných pro obě výše zmíněné funkce a jejich tisk do konzole.
+        \end{itemize}
+
+        \noindent
+        Bližší informace o fungování kódu jsou uvedeny v komentářích souboru \lstinline{algorithms/backtracking.c}. Následující popis je pouze stručné shrnutí.\\
+
+        \noindent
+        Funkce \lstinline{void backtracking(graph* g)}, jež je volána z vnějšího prostředí, spravuje proměnné \lstinline{int* current_clique}, která je polem vrcholů tvořících právě analyzovanou kliku, \lstinline{int** largest_cliques}, která je polem ukazatelů na pole vrcholů tvořících největší nalezené kliky, \lstinline{int max_size}, která je velikost největší nalezené kliky, a \lstinline{int clique_count}, která slouží jako počítadlo největších nalezených klik.\\
+
+        \noindent
+        Tyto proměnné jsou použity při volání \lstinline{find_clique_backtracking(g, current_clique, 0, &largest_cliques, &max_size, &clique_count, 0)}. V této funkci se po ověření vzniku nové kliky (funkcí \lstinline{is_clique_backtracking}) rekurzivně volá opět funkce \lstinline{find_clique_backtracking} s aktualizovanými parametry. Pro každou iteraci je ověřeno, zda právě analyzovaná klika má být uložena jako největší.\\
+
+        \noindent
+        Princip zpětného vyhledávání je zde zaopatřen vynořením z rekurze a přepisem dříve zkoumaných \lstinline{current_clique}. Díky tomu je na konci implementace zapotřebí uvolňovat pouze paměť alokovanou pro všechna nalezená řešení a \lstinline{current_clique}.\\
+
+         \begin{lstlisting}[caption={Zjednodušený kód pro rekurzivní funkci využitou při implementace metody zpětným vyhledáváním.}, captionpos=b]
+void find_clique_backtracking(graph* g, int* current_clique, int clique_size, int*** largest_cliques, int* max_size, int* clique_count, int start) {
+    if (clique_size > *max_size) {
+        *max_size = clique_size;
+        for (int i = 0; i < *clique_count; i++) {
+            free((*largest_cliques)[i]);
+        }
+        free(*largest_cliques);
+        *largest_cliques = NULL;
+        *clique_count = 0;
+    }
+    if (clique_size == *max_size) {
+        *largest_cliques = realloc(*largest_cliques, (*clique_count + 1) * sizeof(int*));
+        (*largest_cliques)[*clique_count] = malloc(clique_size * sizeof(int));
+        for (int i = 0; i < clique_size; i++) {  
+            (*largest_cliques)[*clique_count][i] = current_clique[i];
+        }
+        (*clique_count)++; 
+    }
+    for (int i = start; i < g->size; i++) {
+        if (is_clique_backtracking(g, current_clique, clique_size, i)) {
+            current_clique[clique_size] = i;
+            find_clique_backtracking(g, current_clique, clique_size + 1, largest_cliques, max_size, clique_count, i + 1);
+        }
+    }
+}
+        
+         \end{lstlisting}
+
+         \noindent
+         Jednoduchá grafická reprezentace přepisu prvků podgrafu v proměnné \lstinline{current_clique} je znázorněno na obrázku \ref{fig:backtrack_imp}. Důležitou poznámkou však je, že pořadí zpracování indexů se nemusí shodovat s pořadím v programu.
+
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.3\textwidth}
+                \includegraphics[width=\linewidth]{dokumentace/pic/graf_1_34.png}
+                \caption{Podgraf s uzly 3 a 4.}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \includegraphics[width=\linewidth]{dokumentace/pic/graf_1_234_2.png}
+                \caption{Přidání uzlu 2 nezachová vlastnost kliky podgrafu.}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \includegraphics[width=\linewidth]{dokumentace/pic/graf_1_340.png}
+                \caption{Přepis falešného uzlu kliky dalším podezřelým.}
+            \end{subfigure}
+            \caption{Ilustrace k přepisu uzlů v proměnné \lstinline{current_clique} pro hledání zpětným vyhledáváním (pořádí uzlů nemusí odpovídat pořadí v programu).}
+            \label{fig:backtrack_imp}
+        \end{figure}
+
+
+\section{Experiment} \label{sec:experiment}
+    
+    
+    
 \bibliographystyle{plain}
 \bibliography{dokumentace/zdroje/lib}
 \end{document}

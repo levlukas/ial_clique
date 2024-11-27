@@ -37,10 +37,9 @@
  * - obhajoba (až 5 bodů).
  * 
  * Řešení zabalené v jediném ZIP archivu je odevzdáváno pouze vedoucím
- * týmu prostřednictvím STUDISu. Závazné pokyny pro vypracování projektové
- * dokumentace a doporučení pro závěrečné obhajoby naleznete v Moodlu
- * v sekci Projekty.
- * 
+ * týmu prostřednictvím STUDISu. Závazné pokyny pro vypracování
+ * projektové dokumentace a doporučení pro závěrečné obhajoby naleznete
+ * v Moodlu v sekci Projekty.
  */
 
 #include "graph.h"
