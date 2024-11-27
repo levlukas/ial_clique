@@ -15,7 +15,7 @@
  */
 int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex) {
     for (int i=0; i<clique_size; i++) {
-        if (g->matrix[clique[i]][vertex] == 0) {  // pokud na [i][vertex] neni vrchol pro vsechna i z kliky
+        if (g->matrix[clique[i]][vertex] == 0) {  // pokud vrchol neni spojen s vrcholem 'vertex'
             return 0;  // nejedna se o kliku
         }
     }

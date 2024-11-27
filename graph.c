@@ -1,35 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #include "graph.h"
 
+
+// struktura reprezentujici graf
 typedef struct {
     int size;
     int** matrix;
 } graph;
 
-// initializes graph with given size
+/*
+ * Funkce pro inicializaci grafu
+ * Parametry:
+ * - size: velikost grafu
+ */
 graph* graph_init(int size) {
-    // allocate memory for graph
+    // alokace pameti pro graf
     graph* g = (graph*)malloc(sizeof(graph));
-    if (g == NULL) {  // memory allocation check
+    if (g == NULL) {  // kontrola alokace pameti
         return NULL;
     }
     
-    // copy size
+    // nastaveni velikosti grafu
     g->size = size;
 
-    // allocate memory for matrix
+    // alokace pameti pro matici sousednosti grafu
     g->matrix = (int**)malloc(size * sizeof(int*));
-    if (g->matrix == NULL) {  // memory allocation check
+    if (g->matrix == NULL) {  // kontrola alokace pameti
         free(g);
         return NULL;
     }
 
-    // Allocate memory for each row of the matrix and initialize to 0
-    for (int i = 0; i < size; i++) {
-        g->matrix[i] = (int*)calloc(size, sizeof(int)); // Allocate and set to 0
-        if (g->matrix[i] == NULL) {
-            // Clean up in case of failure
+    // inicializace matice, vsechny prvky nastaveny na 0
+    for (int i = 0; i < size; i++) {  // volani pro kazdy radek
+        g->matrix[i] = (int*)calloc(size, sizeof(int)); // alokace pameti pro radek
+        if (g->matrix[i] == NULL) {  // kontrola alokace pameti
             for (int j = 0; j < i; j++) {
                 free(g->matrix[j]);
             }
@@ -38,132 +42,147 @@ graph* graph_init(int size) {
             return NULL;
         }
     }
-
     return g;
 }
 
 
-// deletes graph and frees memory
+/*
+ * Funkce pro uvolneni pameti grafu
+ * Parametry:
+ * - g: ukazatel na graf
+ */
 void graph_delete(graph* g) {
-    if (g == NULL) {
-        return;  // Avoid dereferencing a NULL pointer
+    if (g == NULL) {  // kontrola ukazatele
+        return; 
     }
 
-    // free memory for matrix
+    // uvolneni pameti pro matici 
     for (int i = 0; i < g->size; i++) {
         free(g->matrix[i]);
     }
     free(g->matrix);
 
-    // free memory for graph
+    // uvolneni pameti pro graf
     free(g);
 }
 
-// reads graph size from file
+/*
+ * Funkce pro nacteni velikosti grafu ze souboru.
+ * Parametry:
+ * - filename: nazev souboru 
+ */
 int graph_read_size(const char* filename) {
-    int size;  // variable to be returned
+    int size;  // promenna, kterou funkce vraci
 
-    // Open file
+    // otevreni souboru
     FILE* file = fopen(filename, "r");
-    if (file == NULL) {
+    if (file == NULL) {  // kontrola otevreni souboru
         fprintf(stderr, "Error: Could not open file '%s'\n", filename);
-        return -1;  // Error: Unable to open file
+        return -1;  
     }
 
-    // Read size
-    if (fscanf(file, "%d", &size) != 1) {  // Failed to read size
+    // nacteni velikosti 
+    if (fscanf(file, "%d", &size) != 1) {  // kontrola nacteni
         fprintf(stderr, "Error: Failed to read graph size from file\n");
         fclose(file);
-        return -1;  // Error: Invalid file format
+        return -1; 
     }
 
-    // Validate size
+    // kontrola velikosti (zda je to kladne cislo)
     if (size <= 0) {
         fprintf(stderr, "Error: Invalid graph size (%d) in file\n", size);
         fclose(file);
-        return -1;  // Error: Non-positive size
+        return -1;  
     }
 
     fclose(file);
-    return size;  // return size, great success
+    return size;  
 }
 
-// reads graph from file
+/*
+ * Funkce pro nacteni grafu ze souboru.
+ * Parametry:
+ * - g: ukazatel na graf
+ * - filename: nazev souboru 
+ */
 int graph_read(graph* g, const char* filename) {
-    // open file
+    // otevreni souboru
     FILE* file = fopen(filename, "r");
-    if (file == NULL) {  // file open check
+    if (file == NULL) {  // kontrola otevreni souboru
         fprintf(stderr, "Error: Could not open file '%s'\n", filename);
         return 0;
     }
 
-    // read size
+    // nacteni velikosti grafu
     int size;
-    if (fscanf(file, "%d", &size) != 1) {  // read check
+    if (fscanf(file, "%d", &size) != 1) {  // kontrola nacteni
         fprintf(stderr, "Error: Failed to read graph size from file\n");
         fclose(file);
         return 0;
     }
 
-    // check size
+    // kontrola velikosti grafu
     if (size != g->size) {
         fprintf(stderr, "Error: Graph size mismatch (expected %d, got %d)\n", g->size, size);
         fclose(file);
         return 0;
     }
 
-    // read matrix
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            if (fscanf(file, "%d", &g->matrix[i][j]) != 1) {  // read check
+    // cteni matice grafu
+    for (int i = 0; i < size; i++) {  // cteni radku
+        for (int j = 0; j < size; j++) {  // cteni prvku
+            if (fscanf(file, "%d", &g->matrix[i][j]) != 1) {  // kontrola nacteni a zapis do matice
                 fclose(file);
                 return 0;
             }
         }
     }
-
-    // close file, return great success - very nice 
     fclose(file);
-
     return 1;
 }
 
-// writes graph to file
+/*
+ * Funkce pro zapis grafu do souboru.
+ * Parametry:
+ * - g: ukazatel na graf
+ * - filename: nazev souboru 
+ */
 int graph_write(graph* g, const char* filename) {
-    // open file
+    // otevreni souboru
     FILE* file = fopen(filename, "w");
-    if (file == NULL) {  // file open check
+    if (file == NULL) {  // kontrola otevreni souboru
         return 0;
     }
 
-    // write size
+    // zapis velikosti matice
     fprintf(file, "%d\n", g->size);
 
-    // write matrix
-    for (int i = 0; i < g->size; i++) {  // write each row
-        for (int j = 0; j < g->size; j++) {  // write each element
+    // zapis samotne matice
+    for (int i = 0; i < g->size; i++) {  // zapis radku
+        for (int j = 0; j < g->size; j++) {  // zapis prvku
             fprintf(file, "%d ", g->matrix[i][j]);
         }
-        fprintf(file, "\n");  // new line
+        fprintf(file, "\n");  // po radku symbol 'newline'
     }
-
-    // close file, return great success - very nice
     fclose(file);
-
     return 1;
 }
 
 
-// prints graph to stdout
+/*
+ * Funkce pro vypis grafu do terminalu.
+ * Parametry:
+ * - g: ukazatel na graf
+ */
 void graph_print(graph* g) {
-    // print size
+    // vypis velikosti grafu
     printf("%d\n", g->size);
 
-    // print matrix
-    for (int i = 0; i < g->size; i++) {  // print each row
-        for (int j = 0; j < g->size; j++) {  // print each element
+    // tisk matice
+    for (int i = 0; i < g->size; i++) {  // vypis kazdeho radku
+        for (int j = 0; j < g->size; j++) {  // vypis prvku
             printf("%d ", g->matrix[i][j]);
         }
-        printf("\n");  // new line
+        printf("\n");  // po radku symbol 'newline'
     }
 }
