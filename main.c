@@ -1,12 +1,10 @@
 #include "graph.h"
 #include "algorithms/bruteforce.h"
 #include "algorithms/backtracking.h"
-// #include "algorithms/smart_bruteforce.h"
-// #include "algorithms/branchandbound.h"
 #include "experiment.h"
 
 int main() {
-    // Example 1: Read a graph from a file and run algorithms
+    // nacteni grafu ze souboru a nalezeni nejvetsi kliky
     int g_size;
     g_size = graph_read_size("graph.gh");
     graph* g = graph_init(g_size);
@@ -24,7 +22,7 @@ int main() {
     }
     graph_delete(g);
 
-    // Example 2: Compare time complexity with random graphs
+    // porovnani algoritmu pro hledani v grafu o libovolnem poctu vrcholu s hustotou 0.5
     printf("\n========================================");
     printf("\nComparing algorithms on random graphs:\n");
     int graph_size_inp;

@@ -6,16 +6,12 @@
 #include <time.h>
 #include "graph.h"
 
-// Generate a random graph of given size
 graph* generate_random_graph(int size, double density);
 
-// Measure execution time of a function
 double measure_execution_time(void (*algorithm)(graph*), graph* g);
 
-// Run experiments and compare algorithms
 void run_experiments(int graph_size, double density);
 
-// Run time comparison experiment
 void time_comparison_experiment();
 
 #endif // EXPERIMENT_H
