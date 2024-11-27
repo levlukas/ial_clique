@@ -85,8 +85,8 @@ void time_comparison_experiment() {
     fprintf(file, "size,density,bruteforce,backtracking\n");
 
     // provedeni experimentu pro mnozinu grafu
-    for (int size = 2; size <= 20; size += 1) {  // pro velikosti grafu
-        for (double density = 0.1; density <= 1.0; density += 0.1) {  // pro hustoty grafu
+    for (int size = 10; size <= 100; size += 1) {  // pro velikosti grafu
+        for (double density = 0.1; density <= 1.0; density += 0.3) {  // pro hustoty grafu
             // generace nahodneho grafu
             graph* g = generate_random_graph(size, density);
 
