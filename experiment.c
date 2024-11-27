@@ -84,3 +84,42 @@ void run_experiments(int size, double density) {
     // Free the graph
     graph_delete(g);
 }
+
+/*
+ * Experiment pro srovnani casove slozitosti algoritmu
+ * Tato funkce provede nekolik experimentu podle zadani a vystupni data ulozi do souboru .csv
+ */
+void time_comparison_experiment() {
+    // Otevreni souboru pro zapis
+    FILE* file = fopen("experiment.csv", "w");
+    if (file == NULL) {
+        printf("Failed to open the file.\n");
+        return;
+    }
+
+    // Zapis hlavicky souboru
+    fprintf(file, "size,density,bruteforce,backtracking\n");
+
+    // Pro kazdy graf provedeme experiment
+    for (int size = 2; size <= 20; size += 1) {
+        for (double density = 0.1; density <= 1.0; density += 0.1) {
+            // Generujeme graf
+            graph* g = generate_random_graph(size, density);
+
+            // Merime cas pro bruteforce
+            double bruteforce_time = measure_execution_time(bruteforce, g);
+
+            // Merime cas pro backtracking
+            double backtracking_time = measure_execution_time(backtracking, g);
+
+            // Zapiseme data do souboru
+            fprintf(file, "%d,%.2f,%.10f,%.10f\n", size, density, bruteforce_time, backtracking_time);
+
+            // Uvolnime graf
+            graph_delete(g);
+        }
+    }
+
+    // Uzavreme soubor
+    fclose(file);
+}

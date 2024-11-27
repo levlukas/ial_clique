@@ -33,5 +33,14 @@ int main() {
     printf("========================================\n");
     run_experiments(graph_size_inp, 0.5); 
     printf("\n========================================\n");
+
+    // casove srovnani s vystupem do souboru .csv
+    int time_comp_inp;
+    printf("Do you want to run time comparison experiment? (1 = yes, 0 = no): ");
+    scanf("%d", &time_comp_inp);
+    if (time_comp_inp) {
+        time_comparison_experiment();
+    }
+
     return 0;
 }

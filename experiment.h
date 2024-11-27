@@ -15,4 +15,7 @@ double measure_execution_time(void (*algorithm)(graph*), graph* g);
 // Run experiments and compare algorithms
 void run_experiments(int graph_size, double density);
 
+// Run time comparison experiment
+void time_comparison_experiment();
+
 #endif // EXPERIMENT_H
