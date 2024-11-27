@@ -113,7 +113,7 @@ void time_comparison_experiment() {
             double backtracking_time = measure_execution_time(backtracking, g);
 
             // Zapiseme data do souboru
-            fprintf(file, "%d,%.2f,%.10f,%.10f\n", size, density, bruteforce_time, backtracking_time);
+            fprintf(file, "%d,%.2f,%.6f,%.6f\n", size, density, bruteforce_time, backtracking_time);
 
             // Uvolnime graf
             graph_delete(g);
