@@ -85,24 +85,24 @@ void time_comparison_experiment() {
     // fprintf(file, "size,density,bruteforce,backtracking\n");
 
     // provedeni experimentu pro mnozinu grafu
-    for (int size = 39; size <= 300; size += 1) {  // pro velikosti grafu
+    for (int size = 5; size <= 10; size += 1) {  // pro velikosti grafu
         printf("\n========================================\n\n");
         printf("Running experiments for graph size %d...\n", size);
         printf("\n========================================\n");
-        for (double density = 0.1; density <= 0.9; density += 0.1) {  // pro hustoty grafu
+        for (double density = 0.5; density <= 0.6; density += 0.1) {  // pro hustoty grafu
             // generace nahodneho grafu
             graph* g = generate_random_graph(size, density);
 
             // bruteforce
-            // double bruteforce_time = measure_execution_time(bruteforce, g);
+            double bruteforce_time = measure_execution_time(bruteforce, g);
 
             // backtracking
             double backtracking_time = measure_execution_time(backtracking, g);
 
             // zapis vysledku do souboru
-            // fprintf(file, "%d,%.2f,%.6f,%.6f\n", size, density, bruteforce_time, backtracking_time);  // pro oba algoritmy
+            fprintf(file, "%d,%.2f,%.6f,%.6f\n", size, density, bruteforce_time, backtracking_time);  // pro oba algoritmy
             // fprintf(file, "%d,%.2f,%.6f,na\n", size, density, bruteforce_time);  // pouze bruteforce
-            fprintf(file, "%d,%.2f,na,%.6f\n", size, density, backtracking_time);  // pouze backtracking
+            // fprintf(file, "%d,%.2f,na,%.6f\n", size, density, backtracking_time);  // pouze backtracking
 
             // uvolneni pameti pro kazdy z grafu
             graph_delete(g);
