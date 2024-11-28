@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "../graph.h"
 
-// Function to solve the clique problem using backtracking
 void backtracking(graph* g);
 
 int is_clique_backtracking(graph* g, int* clique, int clique_size, int vertex);
