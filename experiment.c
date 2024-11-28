@@ -75,33 +75,38 @@ void run_experiments(int size, double density) {
  */
 void time_comparison_experiment() {
     // otevreni souboru pro zapis
-    FILE* file = fopen("experiment.csv", "w");
+    FILE* file = fopen("experiment.csv", "a");
     if (file == NULL) {  // kontrola otevreni souboru
         printf("Failed to open the file.\n");
         return;
     }
 
     // zapis hlavicky csv
-    fprintf(file, "size,density,bruteforce,backtracking\n");
+    // fprintf(file, "size,density,bruteforce,backtracking\n");
 
     // provedeni experimentu pro mnozinu grafu
-    for (int size = 10; size <= 100; size += 1) {  // pro velikosti grafu
-        for (double density = 0.1; density <= 1.0; density += 0.3) {  // pro hustoty grafu
+    for (int size = 39; size <= 300; size += 1) {  // pro velikosti grafu
+        printf("\n========================================\n\n");
+        printf("Running experiments for graph size %d...\n", size);
+        printf("\n========================================\n");
+        for (double density = 0.1; density <= 0.9; density += 0.1) {  // pro hustoty grafu
             // generace nahodneho grafu
             graph* g = generate_random_graph(size, density);
 
             // bruteforce
-            double bruteforce_time = measure_execution_time(bruteforce, g);
+            // double bruteforce_time = measure_execution_time(bruteforce, g);
 
             // backtracking
             double backtracking_time = measure_execution_time(backtracking, g);
 
             // zapis vysledku do souboru
-            fprintf(file, "%d,%.2f,%.6f,%.6f\n", size, density, bruteforce_time, backtracking_time);
+            // fprintf(file, "%d,%.2f,%.6f,%.6f\n", size, density, bruteforce_time, backtracking_time);  // pro oba algoritmy
+            // fprintf(file, "%d,%.2f,%.6f,na\n", size, density, bruteforce_time);  // pouze bruteforce
+            fprintf(file, "%d,%.2f,na,%.6f\n", size, density, backtracking_time);  // pouze backtracking
 
             // uvolneni pameti pro kazdy z grafu
             graph_delete(g);
         }
+        fflush(file);  // vyprazdneni bufferu
     }
-    fclose(file);
 }
