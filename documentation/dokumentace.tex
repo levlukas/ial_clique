@@ -59,9 +59,8 @@
     Náhradní projekt je určen pouze pro studenty, kteří v předmětu IFJ neřeší souběžný projekt (např. studenti FEKT nebo studenti opakující předmět). Tento projekt je týmový a řeší jej trojice nebo čtveřice studentů.\\
     
     \noindent
-    \textbf{Zadání varianty}
+    \textbf{Zadání varianty}\\
     \textit{Klika grafu} je podgraf, který je úplným grafem (=kterýkoliv vrchol kliky je tedy spojen hranou se všemi ostatními vrcholy kliky).\\
-    
     \noindent
     Vytvořte program pro hledání největší kliky v neorientovaném grafu. Pokud existuje více řešení, nalezněte všechna. Výsledky prezentujte vhodným způsobem. Součástí projektu bude načítání grafů ze souboru a vhodné testovací grafy. V dokumentaci uveďte teoretickou složitost úlohy a porovnejte ji s experimentálními výsledky.\\
     
@@ -96,19 +95,34 @@
     \end{itemize}
     Pro každý z těchto algoritmů byla stanovena časová komplexita nejprve teoreticky a následně také experimentálně pomocí jednoduchého programu v jazyce C.
     
-\section{Úvod} \label{sec:teorie}
-    \subsection{Teorie}
-        \subsubsection{Zkoumané objekty}
-            \paragraph{Graf} je základní objekt teorie grafů. Skládá se z uzlů (vrcholů) a hran.\cite{slu_zaklad-teo-grafu}
+\section{Teorie} \label{sec:teorie}
+    \subsection{Zkoumané objekty}
+        \paragraph{Graf} je základní objekt teorie grafů. Skládá se z uzlů (vrcholů) a hran.\cite{slu_zaklad-teo-grafu}
+        
+        \paragraph{Neorientovaný graf}
+        je graf, jehož všechny uzly jsou symetricky spojeny neorientovanou hranou.\cite{slu_zaklad-teo-grafu}
+        
+        \paragraph{Úplný graf} je neorientovaný graf, pro jehož každou dvojici vrcholů existuje právě jedna neorientovaná hrana.\cite{slu_zaklad-teo-grafu}
+        
+        \paragraph{Klika} (anglicky \textit{clique}) je podmnožina vrcholů neorientovaného grafu. Tato podmnožina tvoří úplný graf.\cite{cliq-definition}
+
+    \subsection{Teorie použitých algoritmů} \label{subsec:complexities_teo}
+        Tato kapitola se věnuje teoretickým vlastnostem použitých algoritmů metody hrubou silou a metody zpětného vyhledávání. Především pak jejich časovým a prostorovým složitostem. Implementace obou těchto algoritmů jsou kritické pro jejich složitost. Touto problematikou se zabývá kapitola \ref{sec:implem}.
+
+        \subsubsection{Algoritmus metodou hrubé síly}
+            \paragraph{Časová složitost:} Algoritmus iteruje každým možným podgrafem původního grafu o velikosti (počtu uzlů) $n$ a u každého z těchto podgrafů provádí zkoušku, zda jsou klikami, a to tak, že kontroluje každý uzel tohoto podgrafu. Oba tyto cykly mají vliv na časovou složitost algoritmu.\\[3pt]
+            \noindent
+            Protože pro konstrukci každého podgrafu musíme určit stav každého uzlu jako 1 (náleží podgrafu), nebo 0 (nenáleží podgrafu) - tedy vybrat ze dvou stavů, určíme počet všech možných podgrafů jako $2^n$. Dále stanovíme počet iterací vycházející z kódu (implementace je rozebrána v kapitole \ref{sec:implem}). Protože kód zabraňuje kontrole duplikátních dvojic uzlů v podgrafu, bude nejhorším možným počtem iterací kontrola pro podgraf o velikosti $n$. Z něj se vybere právě $\binom{n}{2} = \frac{n(n-1)}{2}$.\\[3pt]
+            \noindent
+            Časovou složitost tedy určíme zanedbáním konstant pro tyto vnořené cykly jako $\mathbf{O(2^n \cdot n^2)}$.
+
+            \paragraph{Prostorová složitost:} podobně jako při určování časové složitosti vycházíme z toho, že pro každý možný podgraf ukládá implementace až $n$ možných klik (například pokud není mezi uzly žádná hrana). V nejhorším případě je tedy uloženo pro $2^n$ cyklů $n$ prvků. Prostorová složitost je tedy $\mathbf{O(2^n \cdot n)}$.
+
+        \subsection{Algoritmus metodou zpětného vyhledávání}
+            \paragraph{Časová složitost:} postup pro určení časové složitosti je obdobný jako pro algoritmus metodou hrubé síly. Největší možný počet vytvořených podgrafů je $2^n$, pokud by bylo pomocí zpětného vyhledávání natrefeno na výslednou kliku až jako poslední možný podgraf. Tentokrát však vnořený cyklus pro kontrolu zachování kliky iteruje nejhůře $n$-krát. Proto je časová složitost určena jako $\mathbf{O(2^n\cdot n)}$.
+
+            \paragraph{Prostorová složitost:} pokud dojde k maximální rekurzi, vnoření proběhne právě $n$-krát. Pro ukládání právě analyzované kliky je zapotřebí pole o velikosti $n$. Obě tyto veličiny jsou však nezávislé na ukládání největších klik. V nejhorším případě je v grafu $2^n$ podgrafů o velikosti až $n$. Proto uvažujeme, že prostorová složitost je $\mathbf{O(2^n \cdot n)}.$ 
             
-            \paragraph{Neorientovaný graf}
-            je graf, jehož všechny uzly jsou symetricky spojeny neorientovanou hranou.\cite{slu_zaklad-teo-grafu}
-            
-            \paragraph{Úplný graf} je neorientovaný graf, pro jehož každou dvojici vrcholů existuje právě jedna neorientovaná hrana.\cite{slu_zaklad-teo-grafu}
-            
-            \paragraph{Klika} (anglicky \textit{clique}) je podmnožina vrcholů neorientovaného grafu. Tato podmnožina tvoří úplný graf.\cite{cliq-definition}
-    
-        \subsubsection{Teorie použitých algoritmů}
 
 \section{Implementace v jazyce C}  \label{sec:implem}
     Podle zadání (kapitola \ref{sec:zadani}), byly oba algoritmy vypracovány v jazyce C. Další rysy implementace, které vycházejí ze zadání, se týkají zavedených datových struktur (kapitola \ref{subsec:graph_imp}). Implementace obou algoritmů vykazují požadované chování a v případě výskytu několika klik o maximální velikosti nacházejí všechny tyto výsledky. Zároveň, nenachází-li se v grafu žádná hrana, jsou nalezeny všechny vrcholy jako největší kliky.\\
@@ -117,7 +131,7 @@
         Podle zadání (kapitola \ref{sec:zadani}) je třeba vytvořit takovou datovou strukturu neorientovaného grafu, kterou lze snadno reprezentovat záznamem do jednoduchého souboru.\\
 
         \noindent
-        Jednou z možných variant je \textbf{matice sousednosti}. Tato matice je čtvercová a, jelikož v rámci implementace neuvažujeme hrany uzlů vedoucí na sebe sama, diagonála této matice je nulová. Pro ostatní prvky platí, že vyjadřují přítomnost hrany mezi uzly s indexem shodným s řádkem či sloupcem matice.\\
+        Jednou z možných variant je \textbf{matice sousednosti}. Tato matice je čtvercová a, jelikož v rámci implementace neuvažujeme hrany uzlů vedoucí na sebe sama, hlavní diagonála této matice je nulová a matice je podle této diagonály symetrická. Pro ostatní prvky platí, že vyjadřují přítomnost hrany mezi uzly s indexem shodným s řádkem či sloupcem matice.\\
 
         \noindent
         Následující rovnice uvádí názorný příklad matice sousednosti (grafická reprezentace této matice je na obr. \ref{fig:graf1}). Prvky této matice jsou hrany mezi vrcholy označenými indexem. Tedy například prvek $h_{04} = 1$ tvrdí, že mezi uzly 0 a 1 se nachází hrana, zatímco mezi uzly 0 a 1 nikoliv ($h_{01} = 0$).
@@ -175,7 +189,7 @@ typedef struct {
         \begin{figure}[bh]
             \centering
             \includegraphics[width=0.5\linewidth]{dokumentace/pic/graf_1.png}
-            \caption{Grafická reprezentace neorientovaného grafu z kapitoly \ref{subsub:graph}.}
+            \caption{Grafická reprezentace neorientovaného grafu z kapitoly \ref{subsec:graph_imp}.}
             \label{fig:graf1}
         \end{figure}
 
@@ -188,6 +202,7 @@ typedef struct {
         \noindent
         Protože matice sousednosti obsahuje pouze prvky s hodnotou 1 nebo 0, byla zvolena reprezentace vybrané podmnožiny vrcholů pomocí binární masky. Na tu je referováno celým číslem \lstinline{int subset}, které po převodu do binární soustavy určuje, které uzly jsou vybrány. Indexace se shoduje s indexací uzlů v matici.\\
 
+        \noindent
         Například pro matici definovanou v souboru v ukázce kódu \ref{code:zapis_matice} použijeme masku \lstinline{subset} určenou číslem 10. Pro masku \lstinline{subset} tak platí:
         \begin{equation}
             10_{(10)} = 01010_{(2)} \implies u_{0}u_{1}u_{2}u_{3}u_{4}
@@ -259,7 +274,7 @@ void find_clique_backtracking(graph* g, int* current_clique, int clique_size, in
          \end{lstlisting}
 
          \noindent
-         Jednoduchá grafická reprezentace přepisu prvků podgrafu v proměnné \lstinline{current_clique} je znázorněno na obrázku \ref{fig:backtrack_imp}. Důležitou poznámkou však je, že pořadí zpracování indexů se nemusí shodovat s pořadím v programu.
+         Jednoduchá grafická reprezentace přepisu prvků podgrafu v proměnné \lstinline{current_clique} je znázorněna na obrázku \ref{fig:backtrack_imp}. Důležitou poznámkou však je, že pořadí zpracování indexů se nemusí shodovat s pořadím v programu.
 
         \begin{figure}[h!]
             \centering
@@ -281,6 +296,36 @@ void find_clique_backtracking(graph* g, int* current_clique, int clique_size, in
 
 
 \section{Experiment} \label{sec:experiment}
+    Tato kapitola se zabývá experimentálním ověřením vlastností implementace algoritmů v jazyce C (kapitola \ref{sec:implem}) pro jejich následné porovnání s teoretickými předpoklady vznesenými v kapitole \ref{subsec:complexities_teo}.\\
+
+    \noindent
+    Pro tyto účely byl sepsán kód souboru \lstinline{experiment.c}. Bližší popis tohoto kódu je shrnut v komentářích souboru. Pro účely této kapitoly je důležitá funkce \lstinline{time_comparison_experiment}. Její zjednodušený kód je uveden v úryvku \ref{code:experiment}. Z tohoto úryvku vyplývá, že může být volán experiment pro různě husté grafy se zvolenými velikostmi pro oba, či jen jeden z algoritmů.\\
+
+    \begin{lstlisting}[caption={Zjednodušený kód hlavní funkce souboru \lstinline{experiment.c} nastavena pro generaci grafů velikosti 5 až 30 s hustotou 0,5 pro algoritmus metody hrubé síly.}, captionpos=b, label={code:experiment}]
+void time_comparison_experiment() {
+    FILE* file = fopen("experiment.csv", "w");
+    fprintf(file, "size,density,bruteforce,backtracking\n");
+    for (int size = 5; size <= 30; size += 1) { 
+        for (double density = 0.5; density <= 0.5; density += 0.3) {
+            graph* g = generate_random_graph(size, density);
+
+            // bruteforce
+            double bruteforce_time = measure_execution_time(bruteforce, g);
+
+            // backtracking
+            // double backtracking_time = measure_execution_time(backtracking, g);
+
+            // fprintf(file, "%d,%.2f,%.6f,%.6f\n", size, density, bruteforce_time, backtracking_time);  // pro oba algoritmy
+            fprintf(file, "%d,%.2f,%.6f,na\n", size, density, bruteforce_time);  // pouze bruteforce
+            // fprintf(file, "%d,%.2f,na,%.6f\n", size, density, backtracking_time);  // pouze backtracking
+
+            graph_delete(g);
+        }
+    }
+    fclose(file);
+}
+    \end{lstlisting}
+
     
     
     

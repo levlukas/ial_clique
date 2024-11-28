@@ -10,7 +10,7 @@
  * - casova: O(2^n * n^2), kde n je pocet vrcholu grafu.
  *  - iterace pres vsechny podmnoziny vrcholu: O(2^n)
  *  - kontrola, zda je podmnozina klikou: O(n^2)
- * - prostorova: O(2^n * n), kde n je pocet vrcholu grafu.  TODO: overit
+ * - prostorova: O(2^n * n), kde n je pocet vrcholu grafu.
  *  - pro kazdy vrchol (2^n) uchovavame jeho pritomnost v podmnozine (n)
  */
 
