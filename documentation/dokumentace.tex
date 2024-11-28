@@ -144,7 +144,7 @@
         Tato kapitola se věnuje teoretickým vlastnostem použitých algoritmů metody hrubou silou a metody zpětného vyhledávání. Především pak jejich časovým a prostorovým složitostem. Implementace obou těchto algoritmů je kritická pro jejich složitost. Touto problematikou se zabývá kapitola \ref{sec:implem}.\\
 
         \noindent
-        Kruciální pro tuto kapitolu je reprezentace grafu, kterou použitá implementace používá. Jelikož graf je reprezentován pomocí matice sousednosti (kapitola \ref{subsec:graph_imp}) je velice těžké vyhnout se při řešení problému hledání největší kliky exponenciální složitosti.
+        Kruciální pro tuto kapitolu je reprezentace grafu, kterou implementace používá. Jelikož graf je reprezentován pomocí matice sousednosti (kapitola \ref{subsec:graph_imp}) je velice těžké vyhnout se při řešení problému hledání největší kliky exponenciální složitosti.
 
         \subsubsection{Algoritmus metodou hrubé síly}
             \paragraph{Časová složitost:} Algoritmus iteruje každým možným podgrafem původního grafu o velikosti (počtu uzlů) $n$ a u každého z těchto podgrafů provádí zkoušku, zda jsou klikami, a to tak, že kontroluje každý uzel tohoto podgrafu. Oba tyto cykly mají vliv na časovou složitost algoritmu.\\[3pt]
@@ -220,7 +220,7 @@ typedef struct {
             \item \lstinline{graph* graph_init(int size)} pro inicializaci prázdného grafu s vhodnou velikostí,
             \item \lstinline{void graph_delete(graph* g)} pro smazání grafu a uvolnění jeho paměti,
             \item \lstinline{int graph_read_size(const char* filename)} pro přečtení velikosti grafu (počtu uzlů) v matici sousednosti ze souboru,
-            \item \lstinline{int graph_read(graph* g, const char* filename)} pro přečtení matice sousednosti ze souboru, vlastnosti grafu jsou uloženy do vstupní proměnné \lstinline{g} (nevyužívá funkci \lstinline{graph_read_size},
+            \item \lstinline{int graph_read(graph* g, const char* filename)} pro přečtení matice sousednosti ze souboru, vlastnosti grafu jsou uloženy do vstupní proměnné \lstinline{g} (nevyužívá funkci \lstinline{graph_read_size}),
             \item \lstinline{int graph_write(graph* g, const char* filename)} pro zápis matice sousednosti do souboru,
             \item \lstinline{void graph_print(graph* g)} pro vytištění grafu do terminálu
         \end{itemize}
@@ -294,7 +294,7 @@ typedef struct {
         \noindent
         Princip zpětného vyhledávání je zde zaopatřen vynořením z rekurze a přepisem dříve zkoumaných \lstinline{current_clique}. Díky tomu je na konci implementace zapotřebí uvolňovat pouze paměť alokovanou pro všechna nalezená řešení a \lstinline{current_clique}.\\
 
-         \begin{lstlisting}[caption={Zjednodušený kód pro rekurzivní funkci využitou při implementace metody zpětným vyhledáváním.}, captionpos=b]
+         \begin{lstlisting}[caption={Zjednodušený kód pro rekurzivní funkci využitou při implementaci metody zpětným vyhledáváním.}, captionpos=b]
 void find_clique_backtracking(graph* g, int* current_clique, int clique_size, int*** largest_cliques, int* max_size, int* clique_count, int start) {
     if (clique_size > *max_size) {
         *max_size = clique_size;
@@ -351,7 +351,7 @@ void find_clique_backtracking(graph* g, int* current_clique, int clique_size, in
     \noindent
     Pro tyto účely byl sepsán kód souboru \lstinline{experiment.c}. Bližší popis tohoto kódu je shrnut v komentářích souboru. Pro účely této kapitoly je důležitá funkce \lstinline{time_comparison_experiment}. Její zjednodušený kód je uveden v úryvku \ref{code:experiment}. Z tohoto úryvku vyplývá, že může být volán experiment pro různě husté grafy se zvolenými velikostmi pro oba, či jen jeden z algoritmů.\\
 
-    \begin{lstlisting}[caption={Zjednodušený kód hlavní funkce souboru \lstinline{experiment.c} nastavena pro generaci grafů velikosti 5 až 30 s hustotou 0,5 pro algoritmus metody hrubé síly.}, captionpos=b, label={code:experiment}]
+    \begin{lstlisting}[caption={Zjednodušený kód hlavní funkce souboru \lstinline{experiment.c} nasteven pro generaci grafů velikosti 5 až 30 s hustotou 0,5 pro algoritmus metody hrubé síly.}, captionpos=b, label={code:experiment}]
 void time_comparison_experiment() {
     FILE* file = fopen("experiment.csv", "w");
     fprintf(file, "size,density,bruteforce,backtracking\n");
@@ -389,19 +389,19 @@ void time_comparison_experiment() {
     \end{enumerate}
 
     \subsection{Srovnání závislosti časové náročnosti algoritmů na počtu uzlů $n$}
-        Tato podkapitola se zabývá výsledky z experimentů výše označených jako 1. a 2. Díky vhodnému nastavení kódu souboru \lstinline{experiment.c} byla získána data délek časových intervalů potřebných k nalezení řešení úlohy hledání největší kliky v závislosti na počtu uzlů $n$ vstupního neorientovaného grafu. Závislosti pro oba tyto algoritmy je vynesena na obrázku \ref{fig:exp_n_linlin}. Protože závislost projevuje exponenciální charakter a výstup mění řád mnohem rychleji než vstup, byla tato data vynesena i v logaritmickém měřítku, to je zachyceno na obrázku \ref{fig:exp_n_loglog}.
+        Tato podkapitola se zabývá výsledky z experimentů výše označených jako 1. a 2. Díky vhodnému nastavení kódu souboru \lstinline{experiment.c} byla získána data délek časových intervalů potřebných k nalezení řešení úlohy hledání největší kliky v závislosti na počtu uzlů $n$ vstupního neorientovaného grafu. Závislosti pro oba tyto algoritmy jsou vyneseny na obrázku \ref{fig:exp_n_linlin}. Protože závislost projevuje exponenciální charakter a výstup mění řád mnohem rychleji než vstup, byla tato data vynesena i v logaritmickém měřítku, to je zachyceno na obrázku \ref{fig:exp_n_loglog}.
 
     \subsection{Srovnání závislosti časové náročnosti algoritmů na počtu uzlů $n$ a hustotě matice sousednosti}
-        Tato podkapitola se zabývá výsledky z experimentů výše označených jako 3. a 4. Na základě těchto experimentů byly vykresleny dvě teplotní mapy srovnávající vliv počtu uzlů $n$ a hustotě matice sousednosti na časový interval potřebný k nalezení všech řešení. Protože výsledná data vykazují exponenciální chování, byl vynesen tentýž graf také v logaritmickém měřítku. Na něm byly nulové body zanedbány. Zmíněné grafy jsou na obrázcích \ref{fig:n_rho_lin} a \ref{fig:n_rho_log}.
+        Tato podkapitola se zabývá výsledky z experimentů výše označených jako 3. a 4. Na základě těchto experimentů byly vykresleny dvě teplotní mapy srovnávající vliv počtu uzlů $n$ a hustoty matice sousednosti na časový interval potřebný k nalezení všech řešení. Protože výsledná data vykazují exponenciální chování, byl vynesen tentýž graf také v logaritmickém měřítku. Na něm byly nulové body zanedbány. Zmíněné grafy jsou na obrázcích \ref{fig:n_rho_lin} a \ref{fig:n_rho_log}.
 
     \subsection{Vyhodnocení experimentu}
         Experimenty srovnávající délku časového intervalu pro vyřešení úlohy v závislosti na velikosti matice sousednosti $n$ mezi algoritmy, jež byly provedeny s hustotou této matice o hodnotě $\frac{1}{2}$, prokázaly předpokládané chování (podle teoretických předpokladů z kapitoly \ref{subsec:complexities_teo}), a to sice, že algoritmus metody hrubé síly je z dvou porovnávaných více časově náročný.\\
         
         \noindent
-        Je patrné, že se oba algoritmy chovají exponenciálně, což vychází z vlastností implementace matice sousednosti (kapitola \ref{subsec:graph_imp}). Rozdíl je však, že v horní hranici časových složitostí. V kapitole \ref{subsec:complexities_teo} byl vznesen předpoklad, že metoda hrubé síly má tuto funkci $n$-krát větší, než metoda zpětného vyhledávání. I experiment potvrzuje tuto vlastnost.\\
+        Je patrné, že se oba algoritmy chovají exponenciálně, což vychází z vlastností implementace matice sousednosti (kapitola \ref{subsec:graph_imp}). Rozdíl je však v horní hranici časových složitostí. V kapitole \ref{subsec:complexities_teo} byl vznesen předpoklad, že metoda hrubé síly má tuto funkci $n$-krát větší než metoda zpětného vyhledávání. I experiment potvrzuje tuto vlastnost.\\
 
         \noindent
-        Další metoda, kterou by bylo možné přesněji ověřit shodu s předpokladem časové složitosti by bylo vyjádřit limitu poměru logaritmizovaných časových intervalů. To vyplývá z následujících rovnic:
+        Další metoda, kterou by bylo možné přesněji ověřit shodu s předpokladem časové složitosti, by bylo vyjádřit limitu poměru logaritmizovaných časových intervalů. To vyplývá z následujících rovnic:
 
         \begin{equation}
             \begin{aligned}
@@ -411,7 +411,7 @@ void time_comparison_experiment() {
         \end{equation}
 
         \noindent
-        Protože se výrazy liší pouze o koeficient 2 u jednoho s čítanců, jakýsi pomyslný vliv tohoto koeficientu bude s $n \rightarrow \infty$ klesat, a tak bude čitatel i jmenovatel nabývat téže hodnoty. Tento jev je shrnut v rovnici \ref{eq:frac_lim} a obrázku \ref{fig:log_frac}.
+        Protože se výrazy liší pouze o koeficient 2 u jednoho ze sčítanců, jakýsi pomyslný vliv tohoto koeficientu bude s $n \rightarrow \infty$ klesat, a tak bude čitatel i jmenovatel nabývat téže hodnoty. Tento jev je shrnut v rovnici \ref{eq:frac_lim} a obrázku \ref{fig:log_frac}.
         
         \begin{equation} \label{eq:frac_lim}
             \lim_{n\to\infty}\frac{f(n)}{g(n)} = 1

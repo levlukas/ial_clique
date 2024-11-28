@@ -1,0 +1,28 @@
+# Fdb version 4
+["pdflatex"] 1732835823.6177 "/home/VUT/3_zimni/ial/sem_proj/documentation/dokumentace.tex" "dokumentace.pdf" "dokumentace" 1732835823.95402 2
+  "/etc/texmf/web2c/texmf.cnf" 1732455289.45301 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/home/VUT/3_zimni/ial/sem_proj/documentation/dokumentace.tex" 1732832154 33274 e11eb6626bc6de4f5b295621fa8d558f ""
+  "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1000.tfm" 1136768653 3584 adb004a0c8e7c46ee66cad73671f37b4 ""
+  "/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty" 1704662920 150008 7a05b0fdc0167c04e192003e780ab195 ""
+  "/usr/share/texlive/texmf-dist/tex/generic/babel/locale/cs/babel-czech.tex" 1498512262 336 86d743381fe0d22390e59db0ebb6a6c9 ""
+  "/usr/share/texlive/texmf-dist/tex/generic/babel/nil.ldf" 1704662920 2704 3e070b7b8970d0a1dd67bedef24aa192 ""
+  "/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def" 1704662920 6948 df63e25be1d2bc35bbad5a0141f41348 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/article.cls" 1705352648 20144 147463a6a579f4597269ef9565205cfe ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty" 1705352648 5119 a04a8b68ab4f6ce800a41f7f8012a10e ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty" 1705352648 5048 425739d70251273bf93e3d51f3c40048 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo" 1705352648 8448 dbc0dbf4156c0bb9ba01a1c685d3bad0 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty" 1642282977 1656 7e824878bad4df5a3e8bba4e463d9126 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def" 1704491087 30006 57b07afb710ee2f649c65cfbafda39c1 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty" 1705955748 6565 cfd9fd0a1d5f5ad985151778771ff7a9 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty" 1696969620 9327 c30c00c0072edba199ede5889311aaa9 ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1732461769 6831129 c61db80cb63620dfec7f87f2539c1ae2 ""
+  "dokumentace.aux" 1732835823.61394 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "dokumentace.tex" 1732832154 33274 e11eb6626bc6de4f5b295621fa8d558f ""
+  (generated)
+  "dokumentace.aux"
+  "dokumentace.log"
+  "dokumentace.pdf"
+  (rewritten before read)

@@ -1,0 +1,267 @@
+\documentclass[xcolor=dvipsnames,table,10pt]{beamer}
+%\documentclass[xcolor=dvipsnames,table,10pt, aspectratio=169]{beamer}
+\usepackage{newcent}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage{subcaption}
+\usetheme{FIT}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title[]{Nejv\v{e}t\v{s}\'i klika\\v neorientovan\'em grafu}
+
+\author[]{Luk\'a\v{s} Lev}
+
+%\institute[]{Brno University of Technology, Faculty of Information Technology\\
+%Bo\v{z}et\v{e}chova 1/2, 612 00 Brno -- Kr\'alovo Pole\\
+%login@fit.vutbr.cz}
+
+\institute[]{Fakulta informačních technologií
+Vysokého učení technického v Brně\\
+Bo\v{z}et\v{e}chova 1/2, 612 00 Brno -- Kr\'alovo Pole\\
+256660@vutbr.cz}
+
+% České logo - Czech logo
+% beamerouterthemeFIT.sty řádek 9: fitlogo1_cz
+
+%\date{January 1, 2024}
+\date{\today}
+%\date{} % bez data / without date
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}\frametitle{Zadání}
+    \textbf{Zadání varianty}\\
+    Vytvořte program pro hledání největší kliky v neorientovaném grafu. Pokud existuje více řešení, \emph{nalezněte všechna}. Výsledky prezentujte vhodným způsobem. Součástí projektu bude \emph{načítání grafů} ze souboru a vhodné \emph{testovací grafy}. V dokumentaci uveďte teoretickou složitost úlohy a \emph{porovnejte} ji s experimentálními výsledky.\\[5pt]
+
+    \textbf{Řešení musí obsahovat:}
+    \begin{itemize}
+        \item algoritmus pro nalezení všech největších klik v neorientovaném grafu,
+        \item načítání a zapisování grafů do souboru,
+        \item testovací grafy,
+        \item porovnání teoretické složitosti s experimentálními výsledky.
+    \end{itemize}    
+\end{frame}
+
+\begin{frame}{Algoritmy a implementace}
+    \textbf{Vybrané algoritmy:}
+    \begin{itemize}
+        \item hrubá síla (\textit{brute force}),
+        \item zpětné vyhledávání (\textit{backtracking}).
+    \end{itemize}
+    \\[10pt]
+    \textbf{Reprezentace neorientovaného grafu} pomocí matice sousednosti (kapitola 4.3)
+    \begin{itemize}
+        \item výhody
+        \begin{itemize}
+            \item jednoduchost
+        \end{itemize}
+        \item nevýhody
+        \begin{itemize}
+            \item $O(n^2)$ prostorové složitosti
+            \item charakter úlohy $\implies$ iterace všemi podgrafy $\implies$ $O(2^n)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmy a implementace}
+    \begin{equation} \label{eq:adj-mat}
+        \mathrm{M_s} = 
+        \begin{pmatrix}
+            h_{00} & h_{01} & h_{02} & h_{03} & h_{04} \\
+            h_{10} & h_{11} & h_{12} & h_{13} & h_{14} \\
+            h_{20} & h_{21} & h_{22} & h_{23} & h_{24} \\
+            h_{30} & h_{31} & h_{32} & h_{33} & h_{34} \\
+            h_{40} & h_{41} & h_{42} & h_{43} & h_{44}
+        \end{pmatrix} = 
+        \begin{pmatrix}
+            0 & 0 & 0 & 1 & 1 \\
+            0 & 0 & 1 & 0 & 1 \\
+            0 & 1 & 0 & 1 & 0 \\
+            1 & 0 & 1 & 0 & 1 \\
+            1 & 1 & 0 & 1 & 0
+        \end{pmatrix}
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Algoritmy a implementace}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{dokumentace/pic/fc_1_gh.png}
+    \end{figure}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        {\setmonofont{}\texttt{
+5\\
+0 0 0 1 1\\
+0 0 1 0 1\\
+0 1 0 1 0\\
+1 0 1 0 1\\
+1 1 0 1 0}}
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dokumentace/pic/graf_1.png}
+    \end{minipage}
+    
+\end{frame}
+
+\begin{frame}{Algoritmus metodou hrubé síly}
+    \begin{itemize}
+        \item bitová maska
+        \begin{itemize}
+            \item $10_{(10)} = 01010_{(2)} \implies u_{0}u_{1}u_{2}u_{3}u_{4}$\\[10pt]
+        \end{itemize}
+        \item časová složitost $\mathbf{O(2^n\cdot n^2)}$
+        \begin{itemize}
+            \item $2^n$ možných podgrafů
+            \item nejhůře kontrola $\binom{n}{2} = \frac{n(n-1)}{2} \implies n^2$ pro podgraf velikosti n\\[10pt]
+        \end{itemize}
+        \item prostorová složitost $\mathbf{O(2^n\cdot n)}$
+        \begin{itemize}
+            \item pro $2^n$ cyklů uloženo $n$ prvků
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmus metodou zpětného vyhledávání}
+\begin{itemize}
+        \item časová složitost $\mathbf{O(2^n\cdot n)}$
+        \begin{itemize}
+            \item $2^n$ možných podgrafů
+            \item nejhůře až $n$ iterací\\[10pt]
+        \end{itemize}
+        \item prostorová složitost $\mathbf{O(2^n\cdot n)}$
+        \begin{itemize}
+            \item pro $2^n$ cyklů uloženo $n$ prvků
+        \end{itemize}
+    \end{itemize}
+    \hspace{15pt}
+    \begin{figure}[h!]
+        \centering
+        \begin{subfigure}{0.3\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/pic/graf_1_34.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.3\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/pic/graf_1_234_2.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.3\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/pic/graf_1_340.png}
+        \end{subfigure}
+    \end{figure}
+    
+\end{frame}
+
+
+\begin{frame}{Experiment}
+    \begin{enumerate}
+        \item $\forall n \in \left<30;300\right> \cap \mathbb{N}$, $\rho = 0,5$, algoritmus metody zpětného vyhledávání\\[10pt]
+        \item $\forall n \in \left<5;30\right> \cap \mathbb{N}$, $\rho = 0,5$, algoritmus metody hrubé síly\\[10pt]
+        \item $\forall n \in \left<5;59\right> \cap \mathbb{N}$, $\forall \rho \in \bigcup_{k=1}^{9}0,1\cdot k$, algoritmus metody zpětného vyhledávání\\[10pt]
+        \item $\forall n \in \left<5;92\right> \cap \mathbb{N}$, $\forall \rho \in \bigcup_{k=1}^{9}0,1\cdot k$, algoritmus metody hrubé síly
+    \end{enumerate}    
+\end{frame}
+
+\begin{frame}{Experiment 1. a 2.}
+    \textbf{Teoretický předpoklad} (horní hranice stanovena funkcí Omikron)
+    \begin{figure}
+        \centering
+        \includegraphics[width=.8\linewidth]{dokumentace/exp_vyhodnoceni/theo_lin_lin.png}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Experiment 1. a 2.}
+    \textbf{Teoretický předpoklad} (funkce Omikron)\\
+    logaritmické škálování
+    \begin{figure}
+        \centering
+        \includegraphics[width=.8\linewidth]{dokumentace/exp_vyhodnoceni/theo_log_log.png}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Experiment 1. a 2.}
+    \textbf{Výsledek experimentu}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.8\linewidth]{dokumentace/exp_vyhodnoceni/exp_lin_lin.png}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Experiment 1. a 2.}
+    \textbf{Výsledek experimentu}\\
+    logaritmické škálování
+    \begin{figure}
+        \centering
+        \includegraphics[width=.8\linewidth]{dokumentace/exp_vyhodnoceni/exp_log_log.png}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Experiment 1. a 2.}
+    \begin{figure}[h!]
+        \centering
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/exp_vyhodnoceni/exp_lin_lin.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/exp_vyhodnoceni/theo_lin_lin.png}
+        \end{subfigure}
+    \end{figure}
+\end{frame}
+\begin{frame}{Experiment 1. a 2.}
+    \begin{figure}[h!]
+        \centering
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/exp_vyhodnoceni/exp_log_log.png}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{dokumentace/exp_vyhodnoceni/theo_log_log.png}
+        \end{subfigure}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Experiment 3. a 4.}
+    \textbf{Výsledek experimentu}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{dokumentace/exp_vyhodnoceni/n_dens.png}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Experiment 3. a 4.}
+    \textbf{Výsledek experimentu}\\
+    logaritmické škálování
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{dokumentace/exp_vyhodnoceni/log_n_dens.png}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Závěr}
+    \begin{itemize}
+        \item porovnání teoretických předpokladů časové složitosti s experimentem\\[15pt]
+        \item určení vhodné aplikace pro každý z algoritmů\\[15pt]
+        \item nastínění dalších kroků pro přesnější porovnání teorie s experimentem
+    \end{itemize}
+\end{frame}
+
+
+\bluepage{D\v{e}kuji za pozornost.}
+
+\end{document}
