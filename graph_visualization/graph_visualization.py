@@ -1,3 +1,4 @@
+import os
 import matplotlib.pyplot as plt
 import networkx as nx
 
@@ -19,9 +20,8 @@ def read_adjacency_matrix_from_file(filename):
     return num_vertices, matrix
 
 # Main function
-def main():
+def main(filename):
     # Load the adjacency matrix from the file
-    filename = "..//graph.gh"  # Replace with your file path
     num_vertices, adj_matrix = read_adjacency_matrix_from_file(filename)
 
     # Create a graph from the adjacency matrix
@@ -58,4 +58,6 @@ def main():
             print("Invalid input. Please enter an integer.")
 
 if __name__ == "__main__":
-    main()
+    for file in os.listdir():
+        if file.endswith('.gh'):
+            main(file)

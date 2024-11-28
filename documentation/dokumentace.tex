@@ -1,28 +1,32 @@
 \documentclass[a4paper]{article}
 
+\usepackage[czech]{babel} % základní podpora pro češtinu, mj. správné dělení slov
+\usepackage[utf8]{inputenc} % vstupní kódování je UTF-8
+\usepackage[T1]{fontenc} % výstupní kódování
+\usepackage{fontspec} % řeší zahrnutí správných fontů pro LuaLaTeX a XeLaTeX
 \usepackage[inline]{enumitem}
 \usepackage{gensymb}
 \usepackage{caption}
 \usepackage{subcaption}
-\usepackage[utf8]{inputenc}
 \usepackage{gensymb}
 \usepackage{hyperref}
 \usepackage[left=3cm,right=3cm,bottom=3.5cm]{geometry}
 \usepackage{graphicx,lipsum}
 \usepackage{amsmath}
+\usepackage{array}
+\usepackage{float}
 \usepackage{cleveref}
 \usepackage{siunitx}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{tabularx}
+\usepackage{rotating}  % For sidewaysfigure and rotating content
 \usepackage{adjustbox}
+\usepackage{amsfonts} 
 \usepackage{array}
 \usepackage{fancyhdr} % For custom headers and footers
+\usepackage{capt-of}   % For captions in minipage
 \usepackage{graphicx}
 \usepackage{listings}
-
-\title{\textbf{Semestrální práce}\\Největší klika v neorientovaném grafu\\[5pt]IAL}
-\author{Lukáš Lev, 256660}
-\date{\today}
 
 \pagestyle{fancy}
 \fancyhf{} % Clear default header and footer
@@ -52,7 +56,37 @@
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+            
+        \Huge
+        \textbf{Největší klika\\v neorientovaném grafu}
+            
+        \vspace{0.5cm}
+        \LARGE
+            
+        \vspace{1.5cm}
+            
+        \textbf{Lukáš Lev}
+            
+        \vfill
+            
+        Semestrální práce\\
+        IAL
+            
+        \vspace{0.8cm}
+            
+        \includegraphics[width=0.4\textwidth]{dokumentace/pic/FIT.png}
+            
+        \Large
+        UIFS\\
+        VUT-FIT\\
+        \today
+        %28. 11. 2024
+            
+    \end{center}
+\end{titlepage}
 \newpage
 
 \section{Zadání} \label{sec:zadani}
@@ -85,7 +119,7 @@
     Tento projekt byl proveden podle zadání z kapitoly \ref{sec:zadani}, jež bylo poskytnuto vyučujícím.\\
     
     \noindent
-    Předmětem tohoto projektu je hledání \textbf{největší kliky v neorientovaném grafu}, což je jeden z typických problémů v teorii grafů \textbf{TODO: citace}. Tato problematika je krátce popsána v kapitole \ref{sec:zadani}.\\
+    Předmětem tohoto projektu je hledání \textbf{největší kliky v neorientovaném grafu}, což je jeden z typických problémů v teorii grafů \cite{max-cliq}. Tato problematika je krátce popsána v kapitole \ref{sec:zadani}.\\
     
     \noindent
     Pro hledání největší kliky v neorientovaném grafu byly navrženy dva algoritmy, a to sice
@@ -107,7 +141,10 @@
         \paragraph{Klika} (anglicky \textit{clique}) je podmnožina vrcholů neorientovaného grafu. Tato podmnožina tvoří úplný graf.\cite{cliq-definition}
 
     \subsection{Teorie použitých algoritmů} \label{subsec:complexities_teo}
-        Tato kapitola se věnuje teoretickým vlastnostem použitých algoritmů metody hrubou silou a metody zpětného vyhledávání. Především pak jejich časovým a prostorovým složitostem. Implementace obou těchto algoritmů jsou kritické pro jejich složitost. Touto problematikou se zabývá kapitola \ref{sec:implem}.
+        Tato kapitola se věnuje teoretickým vlastnostem použitých algoritmů metody hrubou silou a metody zpětného vyhledávání. Především pak jejich časovým a prostorovým složitostem. Implementace obou těchto algoritmů je kritická pro jejich složitost. Touto problematikou se zabývá kapitola \ref{sec:implem}.\\
+
+        \noindent
+        Kruciální pro tuto kapitolu je reprezentace grafu, kterou použitá implementace používá. Jelikož graf je reprezentován pomocí matice sousednosti (kapitola \ref{subsec:graph_imp}) je velice těžké vyhnout se při řešení problému hledání největší kliky exponenciální složitosti.
 
         \subsubsection{Algoritmus metodou hrubé síly}
             \paragraph{Časová složitost:} Algoritmus iteruje každým možným podgrafem původního grafu o velikosti (počtu uzlů) $n$ a u každého z těchto podgrafů provádí zkoušku, zda jsou klikami, a to tak, že kontroluje každý uzel tohoto podgrafu. Oba tyto cykly mají vliv na časovou složitost algoritmu.\\[3pt]
@@ -118,11 +155,24 @@
 
             \paragraph{Prostorová složitost:} podobně jako při určování časové složitosti vycházíme z toho, že pro každý možný podgraf ukládá implementace až $n$ možných klik (například pokud není mezi uzly žádná hrana). V nejhorším případě je tedy uloženo pro $2^n$ cyklů $n$ prvků. Prostorová složitost je tedy $\mathbf{O(2^n \cdot n)}$.
 
-        \subsection{Algoritmus metodou zpětného vyhledávání}
+        \subsubsection{Algoritmus metodou zpětného vyhledávání}
             \paragraph{Časová složitost:} postup pro určení časové složitosti je obdobný jako pro algoritmus metodou hrubé síly. Největší možný počet vytvořených podgrafů je $2^n$, pokud by bylo pomocí zpětného vyhledávání natrefeno na výslednou kliku až jako poslední možný podgraf. Tentokrát však vnořený cyklus pro kontrolu zachování kliky iteruje nejhůře $n$-krát. Proto je časová složitost určena jako $\mathbf{O(2^n\cdot n)}$.
 
             \paragraph{Prostorová složitost:} pokud dojde k maximální rekurzi, vnoření proběhne právě $n$-krát. Pro ukládání právě analyzované kliky je zapotřebí pole o velikosti $n$. Obě tyto veličiny jsou však nezávislé na ukládání největších klik. V nejhorším případě je v grafu $2^n$ podgrafů o velikosti až $n$. Proto uvažujeme, že prostorová složitost je $\mathbf{O(2^n \cdot n)}.$ 
-            
+
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\linewidth]{dokumentace/exp_vyhodnoceni/theo_lin_lin.png}
+        \captionof{figure}{Grafické vyjádření horní hranice časových složitostí obou algoritmů.}
+        \label{fig:complx_theo_linlin}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\linewidth]{dokumentace/exp_vyhodnoceni/theo_log_log.png}
+        \captionof{figure}{Grafické vyjádření horní hranice časových složitostí obou algoritmů s logaritmickým škálováním na osách.}
+        \label{fig:complx_theo_loglog}
+    \end{minipage}
+    
 
 \section{Implementace v jazyce C}  \label{sec:implem}
     Podle zadání (kapitola \ref{sec:zadani}), byly oba algoritmy vypracovány v jazyce C. Další rysy implementace, které vycházejí ze zadání, se týkají zavedených datových struktur (kapitola \ref{subsec:graph_imp}). Implementace obou algoritmů vykazují požadované chování a v případě výskytu několika klik o maximální velikosti nacházejí všechny tyto výsledky. Zároveň, nenachází-li se v grafu žádná hrana, jsou nalezeny všechny vrcholy jako největší kliky.\\
@@ -178,12 +228,12 @@ typedef struct {
         \noindent
         Soubory, které slouží pro ukládání grafu, jsou označeny příponou \lstinline{.gh} a matici sousednosti uchovávají v následujícím formátu, kde první řádek reprezentuje velikost matice a ostatní řádky informace o jejich prvcích:
         \begin{lstlisting}[caption={Zápis matice v \lstinline{.gh} souboru.},captionpos=b,label={code:zapis_matice}]
-            5
-            0 0 0 1 1
-            0 0 1 0 1
-            0 1 0 1 0
-            1 0 1 0 1
-            1 1 0 1 0
+5
+0 0 0 1 1
+0 0 1 0 1
+0 1 0 1 0
+1 0 1 0 1
+1 1 0 1 0
         \end{lstlisting}
         Tato matice je reprezentována také graficky na obrázku \ref{fig:graf1}.
         \begin{figure}[bh]
@@ -326,9 +376,104 @@ void time_comparison_experiment() {
 }
     \end{lstlisting}
 
+    \noindent
+    Důležitou poznámkou je, že funkce \lstinline{measure_execution_time}, která měří délku časového intervalu potřebného pro nalezení všech řešení, používá standardní knihovnu \lstinline{time.h} a v ní funkci \lstinline{clock}. Přesnost této metody závisí na čase využitém procesorem, předpokládáme rozlišení metody větší než $\mu$s. Proto právě $\mu$s byly stanoveny jako rozlišení experimentů.\\
+
+    \noindent
+    Kód souboru \lstinline{experiment.c} byl spouštěn pro následující podmínky a algoritmy, kde $n$ vyjadřuje počet uzlů, $\rho$ hustotu hran v matici (viz kapitolu \ref{subsec:graph_imp}):
+    \begin{enumerate}
+        \item $\forall n \in \left<30;300\right> \cap \mathbb{N}$, $\rho = 0,5$, algoritmus metody zpětného vyhledávání
+        \item $\forall n \in \left<5;30\right> \cap \mathbb{N}$, $\rho = 0,5$, algoritmus metody hrubé síly
+        \item $\forall n \in \left<5;59\right> \cap \mathbb{N}$, $\forall \rho \in \bigcup_{k=1}^{9}0,1\cdot k$, algoritmus metody zpětného vyhledávání
+        \item $\forall n \in \left<5;92\right> \cap \mathbb{N}$, $\forall \rho \in \bigcup_{k=1}^{9}0,1\cdot k$, algoritmus metody hrubé síly
+    \end{enumerate}
+
+    \subsection{Srovnání závislosti časové náročnosti algoritmů na počtu uzlů $n$}
+        Tato podkapitola se zabývá výsledky z experimentů výše označených jako 1. a 2. Díky vhodnému nastavení kódu souboru \lstinline{experiment.c} byla získána data délek časových intervalů potřebných k nalezení řešení úlohy hledání největší kliky v závislosti na počtu uzlů $n$ vstupního neorientovaného grafu. Závislosti pro oba tyto algoritmy je vynesena na obrázku \ref{fig:exp_n_linlin}. Protože závislost projevuje exponenciální charakter a výstup mění řád mnohem rychleji než vstup, byla tato data vynesena i v logaritmickém měřítku, to je zachyceno na obrázku \ref{fig:exp_n_loglog}.
+
+    \subsection{Srovnání závislosti časové náročnosti algoritmů na počtu uzlů $n$ a hustotě matice sousednosti}
+        Tato podkapitola se zabývá výsledky z experimentů výše označených jako 3. a 4. Na základě těchto experimentů byly vykresleny dvě teplotní mapy srovnávající vliv počtu uzlů $n$ a hustotě matice sousednosti na časový interval potřebný k nalezení všech řešení. Protože výsledná data vykazují exponenciální chování, byl vynesen tentýž graf také v logaritmickém měřítku. Na něm byly nulové body zanedbány. Zmíněné grafy jsou na obrázcích \ref{fig:n_rho_lin} a \ref{fig:n_rho_log}.
+
+    \subsection{Vyhodnocení experimentu}
+        Experimenty srovnávající délku časového intervalu pro vyřešení úlohy v závislosti na velikosti matice sousednosti $n$ mezi algoritmy, jež byly provedeny s hustotou této matice o hodnotě $\frac{1}{2}$, prokázaly předpokládané chování (podle teoretických předpokladů z kapitoly \ref{subsec:complexities_teo}), a to sice, že algoritmus metody hrubé síly je z dvou porovnávaných více časově náročný.\\
+        
+        \noindent
+        Je patrné, že se oba algoritmy chovají exponenciálně, což vychází z vlastností implementace matice sousednosti (kapitola \ref{subsec:graph_imp}). Rozdíl je však, že v horní hranici časových složitostí. V kapitole \ref{subsec:complexities_teo} byl vznesen předpoklad, že metoda hrubé síly má tuto funkci $n$-krát větší, než metoda zpětného vyhledávání. I experiment potvrzuje tuto vlastnost.\\
+
+        \noindent
+        Další metoda, kterou by bylo možné přesněji ověřit shodu s předpokladem časové složitosti by bylo vyjádřit limitu poměru logaritmizovaných časových intervalů. To vyplývá z následujících rovnic:
+
+        \begin{equation}
+            \begin{aligned}
+                \text{Pro hrubou sílu: }&\log{\left(n^2\cdot 2^n\right)} = 2\log{\left(n\right)}+n\log{\left(2 \right)} = f(n)\\
+                \text{Pro zpětné vyhledávání: }&\log{\left(n\cdot 2^n\right)} = \log{\left(n\right)}+n\log{\left(2 \right)} = g(n)
+            \end{aligned}
+        \end{equation}
+
+        \noindent
+        Protože se výrazy liší pouze o koeficient 2 u jednoho s čítanců, jakýsi pomyslný vliv tohoto koeficientu bude s $n \rightarrow \infty$ klesat, a tak bude čitatel i jmenovatel nabývat téže hodnoty. Tento jev je shrnut v rovnici \ref{eq:frac_lim} a obrázku \ref{fig:log_frac}.
+        
+        \begin{equation} \label{eq:frac_lim}
+            \lim_{n\to\infty}\frac{f(n)}{g(n)} = 1
+        \end{equation}
+
+        \noindent
+        Toto srovnání však v rámci experimentu neproběhlo, jelikož vybraná implementace (viz kapitolu \ref{sec:implem}) má kvůli vysoké prostorové složitosti (viz kapitolu \ref{subsec:complexities_teo}) problémy s velkými maticemi a pro hustotu matice 0,5 je tedy problematické najít takovou velikost této matice, pro níž by nedetekovatelně rychlý algoritmus zpětného vyhledávání byl vykonán v měřitelném čase spolu s paměťově náročným algoritmem hrubé síly.
+
+        \noindent
+        V rámci experimentů 3. a 4. bylo na základě dat na obrázcích \ref{fig:n_rho_lin} a \ref{fig:n_rho_log} zjištěno, pro jaké neorientované grafy jsou navržené algoritmy vhodné. Protože graf pro algoritmus metody hrubé síly vykazuje relativně oproti druhému algoritmu nezávislost na hustotě matice sousednosti, můžeme učinit závěr, že je tento algoritmus univerzálnější, zatímco algoritmus metody zpětného vyhledávání je efektivní, pokud není matice zaplněna s hustotou $< 0,7$. Pro hustotu 0,9 dokonce velmi silně zaostává za algoritmem hrubé síly.
     
+
+        \newpage
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.8\linewidth]{dokumentace/exp_vyhodnoceni/exp_lin_lin.png}
+            \caption{Výsledek experimentálního měření závislosti délky časového intervalu pro dokončení úlohy na počtu uzlů vstupního grafu pro oba algoritmy.}
+            \label{fig:exp_n_linlin}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.8\linewidth]{dokumentace/exp_vyhodnoceni/exp_log_log.png}
+            \caption{Výsledek experimentálního měření závislosti délky časového intervalu pro dokončení úlohy na počtu uzlů vstupního grafu pro oba algoritmy s logaritmickým škálováním na osách.}
+            \label{fig:exp_n_loglog}
+        \end{figure}
+        
+        \begin{sidewaysfigure}
+            \centering
+            \includegraphics[width=1\textwidth]{dokumentace/exp_vyhodnoceni/n_dens.png}
+            \caption{Graf závislosti časové náročnosti algoritmů na počtu uzlů $n$ a hustotě matice sousednosti.}
+            \label{fig:n_rho_lin}
+        \end{sidewaysfigure}
+
+        \begin{sidewaysfigure}
+            \centering
+            \includegraphics[width=1\textwidth]{dokumentace/exp_vyhodnoceni/log_n_dens.png}
+            \caption{Graf závislosti časové náročnosti algoritmů na počtu uzlů $n$ a hustotě matice sousednosti v logaritmickém měřítku.}
+            \label{fig:n_rho_log}
+        \end{sidewaysfigure}
+
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\linewidth]{dokumentace/exp_vyhodnoceni/log_frac.png}
+            \caption{Závislost poměru horních hranic logaritmů složitostí obou algoritmů na velikosti matice sousednosti $n$.}
+            \label{fig:log_frac}
+        \end{figure}
+
+\section{Závěr}
+    Byl vytvořen jednoduchý program v jazyce C, který implementuje dva způsoby hledání všech největších klik v neorientovaném grafu. Těmito způsoby jsou použití metody hrubé síly a metody zpětného vyhledávání. Implementace těchto metod je shrnuta v kapitole \ref{sec:implem}. V téže kapitole je implementace neorientovaných grafů maticí sousednosti.\\
+
+    \noindent
+    Pro oba vybrané algoritmy byly stanoveny časové a prostorové složitosti teoreticky v kapitole \ref{subsec:complexities_teo}. Teoretické výroky byly nakonec experimentálně ověřeny pomocí programu v jazyce C. Postup i výsledky tohoto měření jsou uvedeny v kapitole \ref{sec:experiment}. V jejich dvou sekcích jsou pak stanoveny závěry rozebírající časovou náročnost a vhodnou aplikaci každé metody.\\
+
+    \noindent
+    Kapitola \ref{sec:experiment} pak také nastiňuje možnosti další optimalizace či metody přesnější analýzy zkoumaných dat, které nejsou obsahem této práce.
     
+
     
 \bibliographystyle{plain}
 \bibliography{dokumentace/zdroje/lib}
+\newpage
+\lstlistoflistings
+\listoffigures
 \end{document}
